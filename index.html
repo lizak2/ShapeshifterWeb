@@ -117,262 +117,268 @@
 
         <!-- Attributes Section: 5 checkboxes for each attribute -->
         <div class="form-group">
-            <label>Attributes:
-            <div>
-                <label>Strength:
-                    <input type="checkbox" class="strength" data-level="1">
-                    <input type="checkbox" class="strength" data-level="2">
-                    <input type="checkbox" class="strength" data-level="3">
-                    <input type="checkbox" class="strength" data-level="4">
-                    <input type="checkbox" class="strength" data-level="5">
-                </label>
-            </div>
-            <div>
-                <label>Agility:
-                
-                    <input type="checkbox" class="agility" data-level="1">  
-                    <input type="checkbox" class="agility" data-level="2">  
-                    <input type="checkbox" class="agility" data-level="3">  
-                    <input type="checkbox" class="agility" data-level="4">  
-                    <input type="checkbox" class="agility" data-level="5">  
-                </label>
-            </div>
-            <div>
-                <label>Perception:
-                
-                    <input type="checkbox" class="perception" data-level="1">  
-                    <input type="checkbox" class="perception" data-level="2">  
-                    <input type="checkbox" class="perception" data-level="3">  
-                    <input type="checkbox" class="perception" data-level="4">  
-                    <input type="checkbox" class="perception" data-level="5">  
-                </label>
-            </div>
-            <div>
-                <label>Wisdom:
-                
-                    <input type="checkbox" class="wisdom" data-level="1">  
-                    <input type="checkbox" class="wisdom" data-level="2">  
-                    <input type="checkbox" class="wisdom" data-level="3">  
-                    <input type="checkbox" class="wisdom" data-level="4">  
-                    <input type="checkbox" class="wisdom" data-level="5">  
-                </label>
-            </div>
-            <div>
-                <label>Charisma:
-                
-                    <input type="checkbox" class="charisma" data-level="1">  
-                    <input type="checkbox" class="charisma" data-level="2">  
-                    <input type="checkbox" class="charisma" data-level="3">  
-                    <input type="checkbox" class="charisma" data-level="4">  
-                    <input type="checkbox" class="charisma" data-level="5">  
-                </label>
-            </div>
+            <label>Attributes:</label>
+            <table>
+                <tr>
+                    <td><label for="strength">Strength:</label></td>
+                    <td>
+                        <input type="checkbox" id="strength" class="strength" data-level="1">
+                        <input type="checkbox" class="strength" data-level="2">
+                        <input type="checkbox" class="strength" data-level="3">
+                        <input type="checkbox" class="strength" data-level="4">
+                        <input type="checkbox" class="strength" data-level="5">
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="agility">Agility:</label></td>
+                    <td>
+                        <input type="checkbox" id="agility" class="agility" data-level="1">  
+                        <input type="checkbox" class="agility" data-level="2">  
+                        <input type="checkbox" class="agility" data-level="3">  
+                        <input type="checkbox" class="agility" data-level="4">  
+                        <input type="checkbox" class="agility" data-level="5">  
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="perception">Perception:</label></td>
+                    <td>
+                        <input type="checkbox" id="perception" class="perception" data-level="1">  
+                        <input type="checkbox" class="perception" data-level="2">  
+                        <input type="checkbox" class="perception" data-level="3">  
+                        <input type="checkbox" class="perception" data-level="4">  
+                        <input type="checkbox" class="perception" data-level="5">  
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="wisdom">Wisdom:</label></td>
+                    <td>
+                        <input type="checkbox" id="wisdom" class="wisdom" data-level="1">  
+                        <input type="checkbox" class="wisdom" data-level="2">  
+                        <input type="checkbox" class="wisdom" data-level="3">  
+                        <input type="checkbox" class="wisdom" data-level="4">  
+                        <input type="checkbox" class="wisdom" data-level="5">  
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="charisma">Charisma:</label></td>
+                    <td>
+                        <input type="checkbox" id="charisma" class="charisma" data-level="1">  
+                        <input type="checkbox" class="charisma" data-level="2">  
+                        <input type="checkbox" class="charisma" data-level="3">  
+                        <input type="checkbox" class="charisma" data-level="4">  
+                        <input type="checkbox" class="charisma" data-level="5">  
+                    </td>
+                </tr>
+            </table>
         </div>
+        
+        
 
         <!-- Weapon Proficiencies Section: 5 checkboxes for each proficiency -->
         <div class="form-group">
-            <label>Weapon Proficiencies:
-            
-                <div>
-                    <label>Hand-to-Hand Combat:
-                    
-                        <input type="checkbox" class="weapon-handtohand" data-level="1">  
+            <label>Weapon Proficiencies:</label>
+            <table>
+                <tr>
+                    <td><label for="handtohand">Hand-to-Hand Combat:</label></td>
+                    <td>
+                        <input type="checkbox" id="handtohand" class="weapon-handtohand" data-level="1">  
                         <input type="checkbox" class="weapon-handtohand" data-level="2">  
                         <input type="checkbox" class="weapon-handtohand" data-level="3">  
                         <input type="checkbox" class="weapon-handtohand" data-level="4">  
                         <input type="checkbox" class="weapon-handtohand" data-level="5">  
-                    </label>
-
-                <div>
-                    <label>One-Handed:
-                    
-                        <input type="checkbox" class="weapon-onehanded" data-level="1">  
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="onehanded">One-Handed:</label></td>
+                    <td>
+                        <input type="checkbox" id="onehanded" class="weapon-onehanded" data-level="1">  
                         <input type="checkbox" class="weapon-onehanded" data-level="2">  
                         <input type="checkbox" class="weapon-onehanded" data-level="3">  
                         <input type="checkbox" class="weapon-onehanded" data-level="4">  
                         <input type="checkbox" class="weapon-onehanded" data-level="5">  
-                    </label>
-
-                <div>
-                    <label>Two-Handed:
-                    
-                        <input type="checkbox" class="weapon-twohanded" data-level="1">  
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="twohanded">Two-Handed:</label></td>
+                    <td>
+                        <input type="checkbox" id="twohanded" class="weapon-twohanded" data-level="1">  
                         <input type="checkbox" class="weapon-twohanded" data-level="2">  
                         <input type="checkbox" class="weapon-twohanded" data-level="3">  
                         <input type="checkbox" class="weapon-twohanded" data-level="4">  
                         <input type="checkbox" class="weapon-twohanded" data-level="5">  
-                    </label>
-
-                <div>
-                    <label>Polearms:
-                    
-                        <input type="checkbox" class="weapon-polearms" data-level="1">  
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="polearms">Polearms:</label></td>
+                    <td>
+                        <input type="checkbox" id="polearms" class="weapon-polearms" data-level="1">  
                         <input type="checkbox" class="weapon-polearms" data-level="2">  
                         <input type="checkbox" class="weapon-polearms" data-level="3">  
                         <input type="checkbox" class="weapon-polearms" data-level="4">  
                         <input type="checkbox" class="weapon-polearms" data-level="5">  
-                    </label>
-
-                <div>
-                    <label>Throwing:
-                    
-                        <input type="checkbox" class="weapon-throwing" data-level="1">  
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="throwing">Throwing:</label></td>
+                    <td>
+                        <input type="checkbox" id="throwing" class="weapon-throwing" data-level="1">  
                         <input type="checkbox" class="weapon-throwing" data-level="2">  
                         <input type="checkbox" class="weapon-throwing" data-level="3">  
                         <input type="checkbox" class="weapon-throwing" data-level="4">  
                         <input type="checkbox" class="weapon-throwing" data-level="5">  
-                    </label>
-
-                <div>
-                    <label>Bows:
-                    
-                        <input type="checkbox" class="weapon-bows" data-level="1">  
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="bows">Bows:</label></td>
+                    <td>
+                        <input type="checkbox" id="bows" class="weapon-bows" data-level="1">  
                         <input type="checkbox" class="weapon-bows" data-level="2">  
                         <input type="checkbox" class="weapon-bows" data-level="3">  
                         <input type="checkbox" class="weapon-bows" data-level="4">  
                         <input type="checkbox" class="weapon-bows" data-level="5">  
-                    </label>
-
-                <div>
-                    <label>Crossbows:
-                    
-                        <input type="checkbox" class="weapon-crossbows" data-level="1">  
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="crossbows">Crossbows:</label></td>
+                    <td>
+                        <input type="checkbox" id="crossbows" class="weapon-crossbows" data-level="1">  
                         <input type="checkbox" class="weapon-crossbows" data-level="2">  
                         <input type="checkbox" class="weapon-crossbows" data-level="3">  
                         <input type="checkbox" class="weapon-crossbows" data-level="4">  
                         <input type="checkbox" class="weapon-crossbows" data-level="5">  
-                    </label>
-
-                <div>
-                    <label>Pyrotechnics:
-                    
-                        <input type="checkbox" class="weapon-pyrotechnics" data-level="1">  
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="pyrotechnics">Pyrotechnics:</label></td>
+                    <td>
+                        <input type="checkbox" id="pyrotechnics" class="weapon-pyrotechnics" data-level="1">  
                         <input type="checkbox" class="weapon-pyrotechnics" data-level="2">  
                         <input type="checkbox" class="weapon-pyrotechnics" data-level="3">  
                         <input type="checkbox" class="weapon-pyrotechnics" data-level="4">  
                         <input type="checkbox" class="weapon-pyrotechnics" data-level="5">  
-                    </label>
-
-                <div>
-                    <label>Black Powder Firearms:
-                    
-                        <input type="checkbox" class="weapon-blackpowderfirearms" data-level="1">  
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="blackpowderfirearms">Black Powder Firearms:</label></td>
+                    <td>
+                        <input type="checkbox" id="blackpowderfirearms" class="weapon-blackpowderfirearms" data-level="1">  
                         <input type="checkbox" class="weapon-blackpowderfirearms" data-level="2">  
                         <input type="checkbox" class="weapon-blackpowderfirearms" data-level="3">  
                         <input type="checkbox" class="weapon-blackpowderfirearms" data-level="4">  
                         <input type="checkbox" class="weapon-blackpowderfirearms" data-level="5">  
-                    </label>
-
-
-            </div>
+                    </td>
+                </tr>
+            </table>
         </div>
-
-        <!-- Magic Proficiencies Section: 5 checkboxes for each proficiency -->
+        
+        <!-- Magic Proficiencies Section -->
         <div class="form-group">
-            <label>Magic Proficiencies:
-            
-                <div>
-                    <label>Elements:
-                    
-                        <input type="checkbox" class="magic-elements" data-level="1">  
+            <label>Magic Proficiencies:</label>
+            <table>
+                <tr>
+                    <td><label for="elements">Elements:</label></td>
+                    <td>
+                        <input type="checkbox" id="elements" class="magic-elements" data-level="1">  
                         <input type="checkbox" class="magic-elements" data-level="2">  
                         <input type="checkbox" class="magic-elements" data-level="3">  
                         <input type="checkbox" class="magic-elements" data-level="4">  
                         <input type="checkbox" class="magic-elements" data-level="5">  
-                    </label>
-
-                <div>
-                    <label>Offensive:
-                    
-                        <input type="checkbox" class="magic-offensive" data-level="1">  
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="offensive">Offensive:</label></td>
+                    <td>
+                        <input type="checkbox" id="offensive" class="magic-offensive" data-level="1">  
                         <input type="checkbox" class="magic-offensive" data-level="2">  
                         <input type="checkbox" class="magic-offensive" data-level="3">  
                         <input type="checkbox" class="magic-offensive" data-level="4">  
                         <input type="checkbox" class="magic-offensive" data-level="5">  
-                    </label>
-
-                <div>
-                    <label>Defensive:
-                    
-                        <input type="checkbox" class="magic-defensive" data-level="1">  
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="defensive">Defensive:</label></td>
+                    <td>
+                        <input type="checkbox" id="defensive" class="magic-defensive" data-level="1">  
                         <input type="checkbox" class="magic-defensive" data-level="2">  
                         <input type="checkbox" class="magic-defensive" data-level="3">  
                         <input type="checkbox" class="magic-defensive" data-level="4">  
                         <input type="checkbox" class="magic-defensive" data-level="5">  
-                    </label>
-
-                <div>
-                    <label>Auras:
-                    
-                        <input type="checkbox" class="magic-auras" data-level="1">  
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="auras">Auras:</label></td>
+                    <td>
+                        <input type="checkbox" id="auras" class="magic-auras" data-level="1">  
                         <input type="checkbox" class="magic-auras" data-level="2">  
                         <input type="checkbox" class="magic-auras" data-level="3">  
                         <input type="checkbox" class="magic-auras" data-level="4">  
                         <input type="checkbox" class="magic-auras" data-level="5">  
-                    </label>
-
-                <div>
-                    <label>Healing:
-                    
-                        <input type="checkbox" class="magic-healing" data-level="1">  
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="healing">Healing:</label></td>
+                    <td>
+                        <input type="checkbox" id="healing" class="magic-healing" data-level="1">  
                         <input type="checkbox" class="magic-healing" data-level="2">  
                         <input type="checkbox" class="magic-healing" data-level="3">  
                         <input type="checkbox" class="magic-healing" data-level="4">  
                         <input type="checkbox" class="magic-healing" data-level="5">  
-                    </label>
-
-                <div>
-                    <label>Summoning:
-                    
-                        <input type="checkbox" class="magic-summoning" data-level="1">  
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="summoning">Summoning:</label></td>
+                    <td>
+                        <input type="checkbox" id="summoning" class="magic-summoning" data-level="1">  
                         <input type="checkbox" class="magic-summoning" data-level="2">  
                         <input type="checkbox" class="magic-summoning" data-level="3">  
                         <input type="checkbox" class="magic-summoning" data-level="4">  
                         <input type="checkbox" class="magic-summoning" data-level="5">  
-                    </label>
-
-                <div>
-                    <label>Illusion:
-                    
-                        <input type="checkbox" class="magic-illusion" data-level="1">  
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="illusion">Illusion:</label></td>
+                    <td>
+                        <input type="checkbox" id="illusion" class="magic-illusion" data-level="1">  
                         <input type="checkbox" class="magic-illusion" data-level="2">  
                         <input type="checkbox" class="magic-illusion" data-level="3">  
                         <input type="checkbox" class="magic-illusion" data-level="4">  
                         <input type="checkbox" class="magic-illusion" data-level="5">  
-                    </label>
-
-                <div>
-                    <label>MindControl:
-                    
-                        <input type="checkbox" class="magic-mindcontrol" data-level="1">  
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="mindcontrol">MindControl:</label></td>
+                    <td>
+                        <input type="checkbox" id="mindcontrol" class="magic-mindcontrol" data-level="1">  
                         <input type="checkbox" class="magic-mindcontrol" data-level="2">  
                         <input type="checkbox" class="magic-mindcontrol" data-level="3">  
                         <input type="checkbox" class="magic-mindcontrol" data-level="4">  
                         <input type="checkbox" class="magic-mindcontrol" data-level="5">  
-                    </label>
-
-                <div>
-                    <label>NatureControl:
-                    
-                        <input type="checkbox" class="magic-naturecontrol" data-level="1">  
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="naturecontrol">NatureControl:</label></td>
+                    <td>
+                        <input type="checkbox" id="naturecontrol" class="magic-naturecontrol" data-level="1">  
                         <input type="checkbox" class="magic-naturecontrol" data-level="2">  
                         <input type="checkbox" class="magic-naturecontrol" data-level="3">  
                         <input type="checkbox" class="magic-naturecontrol" data-level="4">  
                         <input type="checkbox" class="magic-naturecontrol" data-level="5">  
-                    </label>
-
-                <div>
-                    <label>Shapeshifting:
-                    
-                        <input type="checkbox" class="magic-shapeshifting" data-level="1">  
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="shapeshifting">Shapeshifting:</label></td>
+                    <td>
+                        <input type="checkbox" id="shapeshifting" class="magic-shapeshifting" data-level="1">  
                         <input type="checkbox" class="magic-shapeshifting" data-level="2">  
                         <input type="checkbox" class="magic-shapeshifting" data-level="3">  
                         <input type="checkbox" class="magic-shapeshifting" data-level="4">  
                         <input type="checkbox" class="magic-shapeshifting" data-level="5">  
-                    </label>
-
-            </div>
+                    </td>
+                </tr>
+            </table>
         </div>
+        
+
 
 <!-- Links to LinkedIn and GitHub at the bottom -->
 <div style="text-align: center; margin-top: 30px;">
