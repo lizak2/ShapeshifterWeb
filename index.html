@@ -83,7 +83,7 @@
                 <option value="Ranger">Ranger</option>
             </select>
         </div>
-        
+
         <!-- Attributes Section: 5 checkboxes for each attribute -->
         <div class="form-group">
             <label>Attributes:</label>
@@ -139,37 +139,41 @@
             </div>
         </div>
 
-        <!-- Weapon Proficiencies Section -->
+        <!-- Weapon Proficiencies Section: 5 checkboxes for each proficiency -->
         <div class="form-group">
             <label>Weapon Proficiencies:</label>
             <div class="checkbox-group">
-                <label><input type="checkbox" class="weapon" data-name="Hand-to-Hand Combat"> Hand-to-Hand Combat</label>
-                <label><input type="checkbox" class="weapon" data-name="One-Handed Weapons"> One-Handed Weapons</label>
-                <label><input type="checkbox" class="weapon" data-name="Two-Handed Weapons"> Two-Handed Weapons</label>
-                <label><input type="checkbox" class="weapon" data-name="Polearms"> Polearms</label>
-                <label><input type="checkbox" class="weapon" data-name="Thrown Weapons"> Thrown Weapons</label>
-                <label><input type="checkbox" class="weapon" data-name="Bows"> Bows</label>
-                <label><input type="checkbox" class="weapon" data-name="Crossbows"> Crossbows</label>
-                <label><input type="checkbox" class="weapon" data-name="Pyrotechnics"> Pyrotechnics</label>
-                <label><input type="checkbox" class="weapon" data-name="Black Powder Firearms"> Black Powder Firearms</label>
+                <label>Hand-to-Hand Combat</label>
+                <div>
+                    <label><input type="checkbox" class="weapon-handtohand" data-level="1"> Level 1</label>
+                    <label><input type="checkbox" class="weapon-handtohand" data-level="2"> Level 2</label>
+                    <label><input type="checkbox" class="weapon-handtohand" data-level="3"> Level 3</label>
+                    <label><input type="checkbox" class="weapon-handtohand" data-level="4"> Level 4</label>
+                    <label><input type="checkbox" class="weapon-handtohand" data-level="5"> Level 5</label>
+                </div>
+                <label>One-Handed Weapons</label>
+                <div>
+                    <label><input type="checkbox" class="weapon-onehanded" data-level="1"> Level 1</label>
+                    <label><input type="checkbox" class="weapon-onehanded" data-level="2"> Level 2</label>
+                    <label><input type="checkbox" class="weapon-onehanded" data-level="3"> Level 3</label>
+                    <label><input type="checkbox" class="weapon-onehanded" data-level="4"> Level 4</label>
+                    <label><input type="checkbox" class="weapon-onehanded" data-level="5"> Level 5</label>
+                </div>
+                <label>Two-Handed Weapons</label>
+                <div>
+                    <label><input type="checkbox" class="weapon-twohanded" data-level="1"> Level 1</label>
+                    <label><input type="checkbox" class="weapon-twohanded" data-level="2"> Level 2</label>
+                    <label><input type="checkbox" class="weapon-twohanded" data-level="3"> Level 3</label>
+                    <label><input type="checkbox" class="weapon-twohanded" data-level="4"> Level 4</label>
+                    <label><input type="checkbox" class="weapon-twohanded" data-level="5"> Level 5</label>
+                </div>
             </div>
         </div>
 
-        <!-- Magic Proficiencies Section -->
+        <!-- Magic Proficiencies Section: 5 checkboxes for each proficiency -->
         <div class="form-group">
             <label>Magic Proficiencies:</label>
             <div class="checkbox-group">
-                <label><input type="checkbox" class="magic" data-name="Elements"> Elements</label>
-                <label><input type="checkbox" class="magic" data-name="Offensive"> Offensive</label>
-                <label><input type="checkbox" class="magic" data-name="Defensive"> Defensive</label>
-                <label><input type="checkbox" class="magic" data-name="Auras"> Auras</label>
-                <label><input type="checkbox" class="magic" data-name="Healing"> Healing</label>
-                <label><input type="checkbox" class="magic" data-name="Summoning"> Summoning</label>
-                <label><input type="checkbox" class="magic" data-name="Illusion"> Illusion</label>
-                <label><input type="checkbox" class="magic" data-name="Mind Control"> Mind Control</label>
-                <label><input type="checkbox" class="magic" data-name="Nature Control"> Nature Control</label>
-                <label><input type="checkbox" class="magic" data-name="Shapeshifting"> Shapeshifting</label>
-            </div>
-        </div>
-
-        <button onclick="generateCharacter()">Generate Character
+                <label>Elements</label>
+                <div>
+                    <label><input type="checkbox" class="magic-elements" data-level="
