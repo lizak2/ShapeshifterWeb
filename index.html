@@ -1,10 +1,103 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>My RPG Tool</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RPG Character Tool</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 10px;
+            background: #e9ecef;
+            border-radius: 4px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to My RPG Tool</h1>
-    <p>Create and manage your RPG characters with ease.</p>
+    <h1>RPG Character Tool</h1>
+    <div class="container">
+        <div class="form-group">
+            <label for="character-name">Character Name:</label>
+            <input type="text" id="character-name" placeholder="Enter character name">
+        </div>
+        <div class="form-group">
+            <label for="character-class">Character Class:</label>
+            <input type="text" id="character-class" placeholder="Enter character class">
+        </div>
+        <div class="form-group">
+            <label for="character-strength">Strength:</label>
+            <input type="number" id="character-strength" placeholder="Enter strength value">
+        </div>
+        <div class="form-group">
+            <label for="character-agility">Agility:</label>
+            <input type="number" id="character-agility" placeholder="Enter agility value">
+        </div>
+        <button onclick="generateCharacter()">Generate Character</button>
+        <div class="output" id="output">
+            <!-- Output will appear here -->
+        </div>
+    </div>
+    <script>
+        function generateCharacter() {
+            const name = document.getElementById("character-name").value;
+            const charClass = document.getElementById("character-class").value;
+            const strength = document.getElementById("character-strength").value;
+            const agility = document.getElementById("character-agility").value;
+
+            const output = document.getElementById("output");
+            output.innerHTML = `
+                <h3>Generated Character</h3>
+                <p><strong>Name:</strong> ${name || 'N/A'}</p>
+                <p><strong>Class:</strong> ${charClass || 'N/A'}</p>
+                <p><strong>Strength:</strong> ${strength || '0'}</p>
+                <p><strong>Agility:</strong> ${agility || '0'}</p>
+            `;
+        }
+    </script>
 </body>
 </html>
