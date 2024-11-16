@@ -16,7 +16,7 @@
             text-align: center;
         }
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
             background: #fff;
             padding: 20px;
@@ -31,12 +31,20 @@
             margin-bottom: 5px;
             font-weight: bold;
         }
-        input[type="text"], input[type="number"] {
+        input[type="text"], input[type="number"], select {
             width: 100%;
             padding: 10px;
             margin: 5px 0 10px 0;
             border: 1px solid #ccc;
             border-radius: 4px;
+        }
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .checkbox-group label {
+            margin-right: 15px;
+            width: 120px;
         }
         button {
             background-color: #007bff;
@@ -56,6 +64,10 @@
             background: #e9ecef;
             border-radius: 4px;
         }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -67,37 +79,124 @@
         </div>
         <div class="form-group">
             <label for="character-class">Character Class:</label>
-            <input type="text" id="character-class" placeholder="Enter character class">
+            <select id="character-class">
+                <option value="">Select Class</option>
+                <option value="Warrior">Warrior</option>
+                <option value="Mage">Mage</option>
+                <option value="Rogue">Rogue</option>
+                <option value="Ranger">Ranger</option>
+            </select>
         </div>
+        
+        <!-- Attributes Section -->
         <div class="form-group">
-            <label for="character-strength">Strength:</label>
-            <input type="number" id="character-strength" placeholder="Enter strength value">
+            <label>Attributes:</label>
+            <div>
+                <label for="strength">Strength:</label>
+                <input type="number" id="strength" min="0" max="5" placeholder="0-5">
+            </div>
+            <div>
+                <label for="agility">Agility:</label>
+                <input type="number" id="agility" min="0" max="5" placeholder="0-5">
+            </div>
+            <div>
+                <label for="perception">Perception:</label>
+                <input type="number" id="perception" min="0" max="5" placeholder="0-5">
+            </div>
+            <div>
+                <label for="wisdom">Wisdom:</label>
+                <input type="number" id="wisdom" min="0" max="5" placeholder="0-5">
+            </div>
+            <div>
+                <label for="charisma">Charisma:</label>
+                <input type="number" id="charisma" min="0" max="5" placeholder="0-5">
+            </div>
         </div>
+
+        <!-- Weapon Proficiencies -->
         <div class="form-group">
-            <label for="character-agility">Agility:</label>
-            <input type="number" id="character-agility" placeholder="Enter agility value">
+            <label>Weapon Proficiencies:</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" id="hand-to-hand"> Hand-to-Hand Combat</label>
+                <label><input type="checkbox" id="one-handed"> One-Handed Weapons</label>
+                <label><input type="checkbox" id="two-handed"> Two-Handed Weapons</label>
+                <label><input type="checkbox" id="polearms"> Polearms</label>
+                <label><input type="checkbox" id="thrown-weapons"> Thrown Weapons</label>
+                <label><input type="checkbox" id="bows"> Bows</label>
+                <label><input type="checkbox" id="crossbows"> Crossbows</label>
+                <label><input type="checkbox" id="pyrotechnics"> Pyrotechnics</label>
+                <label><input type="checkbox" id="firearms"> Black Powder Firearms</label>
+            </div>
         </div>
+
+        <!-- Magic Proficiencies -->
+        <div class="form-group">
+            <label>Magic Proficiencies:</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" id="elements"> Elements</label>
+                <label><input type="checkbox" id="offensive"> Offensive</label>
+                <label><input type="checkbox" id="defensive"> Defensive</label>
+                <label><input type="checkbox" id="auras"> Auras</label>
+                <label><input type="checkbox" id="healing"> Healing</label>
+                <label><input type="checkbox" id="summoning"> Summoning</label>
+                <label><input type="checkbox" id="illusion"> Illusion</label>
+                <label><input type="checkbox" id="mind-control"> Mind Control</label>
+                <label><input type="checkbox" id="nature-control"> Nature Control</label>
+                <label><input type="checkbox" id="shapeshifting"> Shapeshifting</label>
+            </div>
+        </div>
+
         <button onclick="generateCharacter()">Generate Character</button>
+
         <div class="output" id="output">
             <!-- Output will appear here -->
         </div>
+        <div class="error" id="error"></div>
     </div>
+
     <script>
         function generateCharacter() {
             const name = document.getElementById("character-name").value;
             const charClass = document.getElementById("character-class").value;
-            const strength = document.getElementById("character-strength").value;
-            const agility = document.getElementById("character-agility").value;
 
-            const output = document.getElementById("output");
-            output.innerHTML = `
-                <h3>Generated Character</h3>
-                <p><strong>Name:</strong> ${name || 'N/A'}</p>
-                <p><strong>Class:</strong> ${charClass || 'N/A'}</p>
-                <p><strong>Strength:</strong> ${strength || '0'}</p>
-                <p><strong>Agility:</strong> ${agility || '0'}</p>
-            `;
-        }
-    </script>
-</body>
-</html>
+            // Getting attribute values
+            const strength = parseInt(document.getElementById("strength").value) || 0;
+            const agility = parseInt(document.getElementById("agility").value) || 0;
+            const perception = parseInt(document.getElementById("perception").value) || 0;
+            const wisdom = parseInt(document.getElementById("wisdom").value) || 0;
+            const charisma = parseInt(document.getElementById("charisma").value) || 0;
+
+            // Weapon proficiency checkboxes
+            const weaponProficiencies = [
+                {id: "hand-to-hand", name: "Hand-to-Hand Combat"},
+                {id: "one-handed", name: "One-Handed Weapons"},
+                {id: "two-handed", name: "Two-Handed Weapons"},
+                {id: "polearms", name: "Polearms"},
+                {id: "thrown-weapons", name: "Thrown Weapons"},
+                {id: "bows", name: "Bows"},
+                {id: "crossbows", name: "Crossbows"},
+                {id: "pyrotechnics", name: "Pyrotechnics"},
+                {id: "firearms", name: "Black Powder Firearms"}
+            ];
+
+            const magicProficiencies = [
+                {id: "elements", name: "Elements"},
+                {id: "offensive", name: "Offensive"},
+                {id: "defensive", name: "Defensive"},
+                {id: "auras", name: "Auras"},
+                {id: "healing", name: "Healing"},
+                {id: "summoning", name: "Summoning"},
+                {id: "illusion", name: "Illusion"},
+                {id: "mind-control", name: "Mind Control"},
+                {id: "nature-control", name: "Nature Control"},
+                {id: "shapeshifting", name: "Shapeshifting"}
+            ];
+
+            // Validating input
+            const allValues = [strength, agility, perception, wisdom, charisma];
+            if (allValues.some(value => value < 0 || value > 5)) {
+                document.getElementById("error").textContent = "Error: Attribute values must be between 0 and 5.";
+                return;
+            }
+
+           
