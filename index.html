@@ -120,6 +120,7 @@
         <div id="weapon-proficiencies"></div>
         <div id="magic-proficiencies"></div>
         
+       
         <script>
             // Function to create an Attribute or Proficiency table
             function createTable(attributeName, options) {
@@ -134,7 +135,7 @@
         
                     // Generate checkboxes for levels 1 to 5
                     for (let i = 1; i <= 5; i++) {
-                        tableHtml += `<input type="checkbox" id="${option.toLowerCase().replace(/\s+/g, '')}-${i}" class="${option.toLowerCase().replace(/\s+/g, '')}" data-level="${i}" onclick="checkPreviousLevels(this)">`;
+                        tableHtml += `<input type="checkbox" id="${option.toLowerCase().replace(/\s+/g, '')}-${i}" class="${option.toLowerCase().replace(/\s+/g, '')}" data-level="${i}" onclick="updateCheckboxes(this)">`;
                     }
         
                     tableHtml += `</td>
@@ -147,21 +148,56 @@
                 return tableHtml;
             }
         
-            // Event handler for ticking checkboxes
-            function checkPreviousLevels(checkbox) {
+            function updateCheckboxes(checkbox) {
                 let level = parseInt(checkbox.getAttribute('data-level'));
-        
-                // Get all checkboxes for the same attribute/proficiency
                 let checkboxes = document.querySelectorAll(`.${checkbox.classList[0]}`);
-                
-                // For all checkboxes with the same class, if their level is less than or equal to the clicked checkbox's level, check them
-                checkboxes.forEach(function(cb) {
-                    let cbLevel = parseInt(cb.getAttribute('data-level'));
-                    if (cbLevel <= level) {
-                        cb.checked = true;
+
+                if (checkbox.checked) {
+                    // Check all checkboxes from level 1 up to and including the clicked level
+                    checkboxes.forEach(function(cb) {
+                        let cbLevel = parseInt(cb.getAttribute('data-level'));
+                        if (cbLevel <= level) {
+                            cb.checked = true;
+                        }
+                    });
+                } else {
+                    // Uncheck the boxes to the right of the clicked level, but keep the clicked level unchecked
+                    checkboxes.forEach(function(cb) {
+                        let cbLevel = parseInt(cb.getAttribute('data-level'));
+                        if (cbLevel > level) {
+                            cb.checked = false;
+                        }
+                    });
+                }
+
+                if (checkboxes[level].checked === false && level != 1) {
+                    checkboxes[level-1].checked = true;
+                }
+
+
+                // Special handling for level 1
+                if (level === 1) {
+                    if (!checkbox.checked) {
+                        // If level 1 is unchecked, uncheck all checkboxes (reset to level 0)
+                        checkboxes.forEach(function(cb) {
+                            cb.checked = false;
+                        });
+                    } else {
+                        // If level 1 is checked, ensure only level 1 is checked and others are unchecked
+                        checkboxes.forEach(function(cb) {
+                            let cbLevel = parseInt(cb.getAttribute('data-level'));
+                            if (cbLevel === 1) {
+                                cb.checked = true;
+                            } else {
+                                cb.checked = false;
+                            }
+                        });
                     }
-                });
+                }
             }
+
+
+
         
             // Define Attributes
             const attributes = [
@@ -199,12 +235,17 @@
                 "Shapeshifting"
             ];
         
-            // Generate and insert the HTML for Attributes, Weapon Proficiencies and Magic Proficiencies
+            // Generate and insert the HTML for Attributes, Weapon Proficiencies, and Magic Proficiencies
             document.getElementById("attributes").innerHTML = createTable("Attributes", attributes);
             document.getElementById("weapon-proficiencies").innerHTML = createTable("Weapon Proficiencies", weaponProficiencies);
             document.getElementById("magic-proficiencies").innerHTML = createTable("Magic Proficiencies", magicProficiencies);
         
         </script>
+        
+        </body>
+        </html>
+        
+
 
 
 <!-- Links to LinkedIn and GitHub at the bottom -->
