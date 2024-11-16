@@ -31,12 +31,8 @@
             margin-bottom: 5px;
             font-weight: bold;
         }
-        input[type="text"], input[type="number"], select {
-            width: 100%;
-            padding: 10px;
-            margin: 5px 0 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+        input[type="checkbox"] {
+            margin-right: 10px;
         }
         .checkbox-group {
             display: flex;
@@ -88,115 +84,92 @@
             </select>
         </div>
         
-        <!-- Attributes Section -->
+        <!-- Attributes Section: 5 checkboxes for each attribute -->
         <div class="form-group">
             <label>Attributes:</label>
             <div>
-                <label for="strength">Strength:</label>
-                <input type="number" id="strength" min="0" max="5" placeholder="0-5">
+                <label>Strength:</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" class="strength" data-level="1"> Level 1</label>
+                    <label><input type="checkbox" class="strength" data-level="2"> Level 2</label>
+                    <label><input type="checkbox" class="strength" data-level="3"> Level 3</label>
+                    <label><input type="checkbox" class="strength" data-level="4"> Level 4</label>
+                    <label><input type="checkbox" class="strength" data-level="5"> Level 5</label>
+                </div>
             </div>
             <div>
-                <label for="agility">Agility:</label>
-                <input type="number" id="agility" min="0" max="5" placeholder="0-5">
+                <label>Agility:</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" class="agility" data-level="1"> Level 1</label>
+                    <label><input type="checkbox" class="agility" data-level="2"> Level 2</label>
+                    <label><input type="checkbox" class="agility" data-level="3"> Level 3</label>
+                    <label><input type="checkbox" class="agility" data-level="4"> Level 4</label>
+                    <label><input type="checkbox" class="agility" data-level="5"> Level 5</label>
+                </div>
             </div>
             <div>
-                <label for="perception">Perception:</label>
-                <input type="number" id="perception" min="0" max="5" placeholder="0-5">
+                <label>Perception:</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" class="perception" data-level="1"> Level 1</label>
+                    <label><input type="checkbox" class="perception" data-level="2"> Level 2</label>
+                    <label><input type="checkbox" class="perception" data-level="3"> Level 3</label>
+                    <label><input type="checkbox" class="perception" data-level="4"> Level 4</label>
+                    <label><input type="checkbox" class="perception" data-level="5"> Level 5</label>
+                </div>
             </div>
             <div>
-                <label for="wisdom">Wisdom:</label>
-                <input type="number" id="wisdom" min="0" max="5" placeholder="0-5">
+                <label>Wisdom:</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" class="wisdom" data-level="1"> Level 1</label>
+                    <label><input type="checkbox" class="wisdom" data-level="2"> Level 2</label>
+                    <label><input type="checkbox" class="wisdom" data-level="3"> Level 3</label>
+                    <label><input type="checkbox" class="wisdom" data-level="4"> Level 4</label>
+                    <label><input type="checkbox" class="wisdom" data-level="5"> Level 5</label>
+                </div>
             </div>
             <div>
-                <label for="charisma">Charisma:</label>
-                <input type="number" id="charisma" min="0" max="5" placeholder="0-5">
+                <label>Charisma:</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" class="charisma" data-level="1"> Level 1</label>
+                    <label><input type="checkbox" class="charisma" data-level="2"> Level 2</label>
+                    <label><input type="checkbox" class="charisma" data-level="3"> Level 3</label>
+                    <label><input type="checkbox" class="charisma" data-level="4"> Level 4</label>
+                    <label><input type="checkbox" class="charisma" data-level="5"> Level 5</label>
+                </div>
             </div>
         </div>
 
-        <!-- Weapon Proficiencies -->
+        <!-- Weapon Proficiencies Section -->
         <div class="form-group">
             <label>Weapon Proficiencies:</label>
             <div class="checkbox-group">
-                <label><input type="checkbox" id="hand-to-hand"> Hand-to-Hand Combat</label>
-                <label><input type="checkbox" id="one-handed"> One-Handed Weapons</label>
-                <label><input type="checkbox" id="two-handed"> Two-Handed Weapons</label>
-                <label><input type="checkbox" id="polearms"> Polearms</label>
-                <label><input type="checkbox" id="thrown-weapons"> Thrown Weapons</label>
-                <label><input type="checkbox" id="bows"> Bows</label>
-                <label><input type="checkbox" id="crossbows"> Crossbows</label>
-                <label><input type="checkbox" id="pyrotechnics"> Pyrotechnics</label>
-                <label><input type="checkbox" id="firearms"> Black Powder Firearms</label>
+                <label><input type="checkbox" class="weapon" data-name="Hand-to-Hand Combat"> Hand-to-Hand Combat</label>
+                <label><input type="checkbox" class="weapon" data-name="One-Handed Weapons"> One-Handed Weapons</label>
+                <label><input type="checkbox" class="weapon" data-name="Two-Handed Weapons"> Two-Handed Weapons</label>
+                <label><input type="checkbox" class="weapon" data-name="Polearms"> Polearms</label>
+                <label><input type="checkbox" class="weapon" data-name="Thrown Weapons"> Thrown Weapons</label>
+                <label><input type="checkbox" class="weapon" data-name="Bows"> Bows</label>
+                <label><input type="checkbox" class="weapon" data-name="Crossbows"> Crossbows</label>
+                <label><input type="checkbox" class="weapon" data-name="Pyrotechnics"> Pyrotechnics</label>
+                <label><input type="checkbox" class="weapon" data-name="Black Powder Firearms"> Black Powder Firearms</label>
             </div>
         </div>
 
-        <!-- Magic Proficiencies -->
+        <!-- Magic Proficiencies Section -->
         <div class="form-group">
             <label>Magic Proficiencies:</label>
             <div class="checkbox-group">
-                <label><input type="checkbox" id="elements"> Elements</label>
-                <label><input type="checkbox" id="offensive"> Offensive</label>
-                <label><input type="checkbox" id="defensive"> Defensive</label>
-                <label><input type="checkbox" id="auras"> Auras</label>
-                <label><input type="checkbox" id="healing"> Healing</label>
-                <label><input type="checkbox" id="summoning"> Summoning</label>
-                <label><input type="checkbox" id="illusion"> Illusion</label>
-                <label><input type="checkbox" id="mind-control"> Mind Control</label>
-                <label><input type="checkbox" id="nature-control"> Nature Control</label>
-                <label><input type="checkbox" id="shapeshifting"> Shapeshifting</label>
+                <label><input type="checkbox" class="magic" data-name="Elements"> Elements</label>
+                <label><input type="checkbox" class="magic" data-name="Offensive"> Offensive</label>
+                <label><input type="checkbox" class="magic" data-name="Defensive"> Defensive</label>
+                <label><input type="checkbox" class="magic" data-name="Auras"> Auras</label>
+                <label><input type="checkbox" class="magic" data-name="Healing"> Healing</label>
+                <label><input type="checkbox" class="magic" data-name="Summoning"> Summoning</label>
+                <label><input type="checkbox" class="magic" data-name="Illusion"> Illusion</label>
+                <label><input type="checkbox" class="magic" data-name="Mind Control"> Mind Control</label>
+                <label><input type="checkbox" class="magic" data-name="Nature Control"> Nature Control</label>
+                <label><input type="checkbox" class="magic" data-name="Shapeshifting"> Shapeshifting</label>
             </div>
         </div>
 
-        <button onclick="generateCharacter()">Generate Character</button>
-
-        <div class="output" id="output">
-            <!-- Output will appear here -->
-        </div>
-        <div class="error" id="error"></div>
-    </div>
-
-    <script>
-        function generateCharacter() {
-            const name = document.getElementById("character-name").value;
-            const charClass = document.getElementById("character-class").value;
-
-            // Getting attribute values
-            const strength = parseInt(document.getElementById("strength").value) || 0;
-            const agility = parseInt(document.getElementById("agility").value) || 0;
-            const perception = parseInt(document.getElementById("perception").value) || 0;
-            const wisdom = parseInt(document.getElementById("wisdom").value) || 0;
-            const charisma = parseInt(document.getElementById("charisma").value) || 0;
-
-            // Weapon proficiency checkboxes
-            const weaponProficiencies = [
-                {id: "hand-to-hand", name: "Hand-to-Hand Combat"},
-                {id: "one-handed", name: "One-Handed Weapons"},
-                {id: "two-handed", name: "Two-Handed Weapons"},
-                {id: "polearms", name: "Polearms"},
-                {id: "thrown-weapons", name: "Thrown Weapons"},
-                {id: "bows", name: "Bows"},
-                {id: "crossbows", name: "Crossbows"},
-                {id: "pyrotechnics", name: "Pyrotechnics"},
-                {id: "firearms", name: "Black Powder Firearms"}
-            ];
-
-            const magicProficiencies = [
-                {id: "elements", name: "Elements"},
-                {id: "offensive", name: "Offensive"},
-                {id: "defensive", name: "Defensive"},
-                {id: "auras", name: "Auras"},
-                {id: "healing", name: "Healing"},
-                {id: "summoning", name: "Summoning"},
-                {id: "illusion", name: "Illusion"},
-                {id: "mind-control", name: "Mind Control"},
-                {id: "nature-control", name: "Nature Control"},
-                {id: "shapeshifting", name: "Shapeshifting"}
-            ];
-
-            // Validating input
-            const allValues = [strength, agility, perception, wisdom, charisma];
-            if (allValues.some(value => value < 0 || value > 5)) {
-                document.getElementById("error").textContent = "Error: Attribute values must be between 0 and 5.";
-                return;
-            }
-
-           
+        <button onclick="generateCharacter()">Generate Character
