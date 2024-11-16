@@ -3,7 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RPG Character Tool</title>
+    <title>Shapeshifter</title>
+    <title>Role-playing Game</title>
+    <title>Mechanics helper page</title>
+
+    <!-- Language switcher with flags -->
+    <div class="flag-container">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_Poland.svg" alt="Polish Flag" id="pl-flag" onclick="switchLanguage('pl')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg" alt="English Flag" id="en-flag" onclick="switchLanguage('en')">
+    </div>
+    
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -372,3 +381,24 @@
         GitHub
     </a>
 </div>
+
+                        <script>
+        function switchLanguage(language) {
+            if (language === 'pl') {
+                document.body.classList.remove('lang-en');
+                document.body.classList.add('lang-pl');
+            } else {
+                document.body.classList.remove('lang-pl');
+                document.body.classList.add('lang-en');
+            }
+        }
+
+        function generateCharacter() {
+            let characterName = document.getElementById("character-name").value;
+            let characterClass = document.getElementById("character-class").value;
+            let output = "Character Name: " + characterName + ", Class: " + characterClass;
+
+            document.querySelector(".output").innerHTML = "<p class='en'>" + output + "</p><p class='pl'>" + output + "</p>";
+        }
+    </script>
+
