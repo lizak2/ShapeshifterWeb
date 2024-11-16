@@ -242,6 +242,27 @@
         
         </script>
         
+        <script>
+            // Example of connecting to your backend
+            const backendUrl = 'https://shapeshifter-rust.onrender.com/api/endpoint'; // Replace with your Render backend URL
+        
+            // Fetch data from your backend
+            async function getData() {
+              try {
+                const response = await fetch(backendUrl);
+                const data = await response.json();
+                console.log(data);
+              } catch (error) {
+                console.error('Error fetching data:', error);
+              }
+            }
+        
+            // Call the function
+            getData();
+          </script>
+        
+
+
         </body>
         </html>
         
