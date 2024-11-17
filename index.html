@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shapeshifter</title>
-    <title>Role-playing Game</title>
-    <title>Mechanics helper page</title>
-
+    
     <!-- Language switcher with flags -->
     <div class="flag-container">
         <img src="https://upload.wikimedia.org/wikipedia/en/1/12/Flag_of_Poland.svg" alt="Polish Flag" id="pl-flag" onclick="switchLanguage('pl')">
         <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg" alt="English Flag" id="en-flag" onclick="switchLanguage('en')">
     </div>
     
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -83,29 +82,20 @@
             color: red;
             font-weight: bold;
         }
-        .lang-text {
-            display: none;
-        }
-        .lang-en .en {
-            display: block;
-        }
-        .lang-pl .pl {
-            display: block;
-        }
     </style>
 </head>
 <body>
-    <h1>Shapeshifter</h1>
-    <h2 style="text-align: center;">Role-playing Game</h2>
-    <h3 style="text-align: center;">Mechanics helper page</h3>
+    <h1 id="title-main">Shapeshifter</h1>
+    <h2 id="title-role" style="text-align: center;">Role-playing Game</h2>
+    <h3 id="title-helper" style="text-align: center;">Mechanics helper page</h3>
 
     <div class="container">
         <div class="form-group">
-            <label for="character-name">Character Name:
+            <label id="label-character-name" for="character-name">Character Name:</label>
             <input type="text" id="character-name" placeholder="Enter character name">
         </div>
         <div class="form-group">
-            <label for="character-class">Character Class:
+            <label id="label-character-class" for="character-class">Character Class:</label>
             <select id="character-class">
                 <option value="">Select Class</option>
                 <option value="Warrior">Warrior</option>
@@ -115,132 +105,130 @@
             </select>
         </div>
 
+
         <!-- Attributes Section: 5 checkboxes for each attribute -->
         <div id="attributes"></div>
         <div id="weapon-proficiencies"></div>
         <div id="magic-proficiencies"></div>
-        
        
-        <script>
-            // Function to create an Attribute or Proficiency table
-            function createTable(attributeName, options) {
-                let tableHtml = `<div class="form-group">
-                                    <label>${attributeName}:</label>
-                                    <table border="1">`;
-        
-                options.forEach((option) => {
-                    tableHtml += `<tr>
-                                    <td><label for="${option.toLowerCase().replace(/\s+/g, '')}">${option}:</label></td>
-                                    <td>`;
-        
-                    // Generate checkboxes for levels 1 to 5
-                    for (let i = 1; i <= 5; i++) {
-                        tableHtml += `<input type="checkbox" id="${option.toLowerCase().replace(/\s+/g, '')}-${i}" class="${option.toLowerCase().replace(/\s+/g, '')}" data-level="${i}" onclick="updateCheckboxes(this)">`;
-                    }
-        
-                    tableHtml += `</td>
-                                  </tr>`;
+<!-- Attributes Section: 5 checkboxes for each attribute -->
+<div id="attributes"></div>
+<div id="weapon-proficiencies"></div>
+<div id="magic-proficiencies"></div>
+
+<script>
+    // Function to create an Attribute or Proficiency table
+    function createTable(attributeName, options) {
+        let tableHtml = `<div class="form-group">
+                            <label>${attributeName}:</label>
+                            <table border="1">`;
+        options.forEach((option) => {
+            tableHtml += `<tr>
+                            <td><label for="${option.toLowerCase().replace(/\s+/g, '')}">${option}:</label></td>
+                            <td>`;
+            // Generate checkboxes for levels 1 to 5
+            for (let i = 1; i <= 5; i++) {
+                tableHtml += `<input type="checkbox" id="${option.toLowerCase().replace(/\s+/g, '')}-${i}" class="${option.toLowerCase().replace(/\s+/g, '')}" data-level="${i}" onclick="updateCheckboxes(this)">`;
+            }
+            tableHtml += `</td>
+                          <td class="checkbox-count" id="${option.toLowerCase().replace(/\s+/g, '')}-count">+0</td>
+                          </tr>`;
+        });
+        tableHtml += `</table>
+                      </div>`;
+    
+        return tableHtml;
+    }
+
+    function updateCheckboxes(checkbox) {
+        let level = parseInt(checkbox.getAttribute('data-level'));
+        let checkboxes = document.querySelectorAll(`.${checkbox.classList[0]}`);
+        let countElement = document.getElementById(`${checkbox.classList[0]}-count`);
+
+        if (checkbox.checked) {
+            // Check all checkboxes from level 1 up to and including the clicked level
+            checkboxes.forEach(function(cb) {
+                let cbLevel = parseInt(cb.getAttribute('data-level'));
+                if (cbLevel <= level) {
+                    cb.checked = true;
+                }
+            });
+        } else {
+            // Uncheck the boxes to the right of the clicked level, but keep the clicked level unchecked
+            checkboxes.forEach(function(cb) {
+                let cbLevel = parseInt(cb.getAttribute('data-level'));
+                if (cbLevel > level) {
+                    cb.checked = false;
+                }
+            });
+        }
+
+        // Special handling for level 1
+        if (level === 1) {
+            if (!checkbox.checked) {
+                // If level 1 is unchecked, uncheck all checkboxes (reset to level 0)
+                checkboxes.forEach(function(cb) {
+                    cb.checked = false;
                 });
-        
-                tableHtml += `</table>
-                              </div>`;
-        
-                return tableHtml;
-            }
-        
-            function updateCheckboxes(checkbox) {
-                let level = parseInt(checkbox.getAttribute('data-level'));
-                let checkboxes = document.querySelectorAll(`.${checkbox.classList[0]}`);
-
-                if (checkbox.checked) {
-                    // Check all checkboxes from level 1 up to and including the clicked level
-                    checkboxes.forEach(function(cb) {
-                        let cbLevel = parseInt(cb.getAttribute('data-level'));
-                        if (cbLevel <= level) {
-                            cb.checked = true;
-                        }
-                    });
-                } else {
-                    // Uncheck the boxes to the right of the clicked level, but keep the clicked level unchecked
-                    checkboxes.forEach(function(cb) {
-                        let cbLevel = parseInt(cb.getAttribute('data-level'));
-                        if (cbLevel > level) {
-                            cb.checked = false;
-                        }
-                    });
-                }
-
-                if (checkboxes[level].checked === false && level != 1) {
-                    checkboxes[level-1].checked = true;
-                }
-
-
-                // Special handling for level 1
-                if (level === 1) {
-                    if (!checkbox.checked) {
-                        // If level 1 is unchecked, uncheck all checkboxes (reset to level 0)
-                        checkboxes.forEach(function(cb) {
-                            cb.checked = false;
-                        });
+            } else {
+                // If level 1 is checked, ensure only level 1 is checked and others are unchecked
+                checkboxes.forEach(function(cb) {
+                    let cbLevel = parseInt(cb.getAttribute('data-level'));
+                    if (cbLevel === 1) {
+                        cb.checked = true;
                     } else {
-                        // If level 1 is checked, ensure only level 1 is checked and others are unchecked
-                        checkboxes.forEach(function(cb) {
-                            let cbLevel = parseInt(cb.getAttribute('data-level'));
-                            if (cbLevel === 1) {
-                                cb.checked = true;
-                            } else {
-                                cb.checked = false;
-                            }
-                        });
+                        cb.checked = false;
                     }
-                }
+                });
             }
+        }
 
+        // Update the count of checked checkboxes
+        let tickedCheckboxes = Array.from(checkboxes).filter(cb => cb.checked).length;
+        countElement.innerText = `+${tickedCheckboxes}`;
+    }
 
+    // Define Attributes
+    const attributes = [
+        "Strength",
+        "Agility",
+        "Perception",
+        "Wisdom",
+        "Charisma"
+    ];
 
-        
-            // Define Attributes
-            const attributes = [
-                "Strength",
-                "Agility",
-                "Perception",
-                "Wisdom",
-                "Charisma"
-            ];
-        
-            // Define Weapon Proficiencies
-            const weaponProficiencies = [
-                "Hand-to-Hand Combat",
-                "One-Handed",
-                "Two-Handed",
-                "Polearms",
-                "Throwing",
-                "Bows",
-                "Crossbows",
-                "Pyrotechnics",
-                "Black Powder Firearms"
-            ];
-        
-            // Define Magic Proficiencies
-            const magicProficiencies = [
-                "Elements",
-                "Offensive",
-                "Defensive",
-                "Auras",
-                "Healing",
-                "Summoning",
-                "Illusion",
-                "Mind Control",
-                "Nature Control",
-                "Shapeshifting"
-            ];
-        
-            // Generate and insert the HTML for Attributes, Weapon Proficiencies, and Magic Proficiencies
-            document.getElementById("attributes").innerHTML = createTable("Attributes", attributes);
-            document.getElementById("weapon-proficiencies").innerHTML = createTable("Weapon Proficiencies", weaponProficiencies);
-            document.getElementById("magic-proficiencies").innerHTML = createTable("Magic Proficiencies", magicProficiencies);
+    // Define Weapon Proficiencies
+    const weaponProficiencies = [
+        "Hand-to-Hand Combat",
+        "One-Handed",
+        "Two-Handed",
+        "Polearms",
+        "Throwing",
+        "Bows",
+        "Crossbows",
+        "Pyrotechnics",
+        "Black Powder Firearms"
+    ];
 
-        </script>
+    // Define Magic Proficiencies
+    const magicProficiencies = [
+        "Elements",
+        "Offensive",
+        "Defensive",
+        "Auras",
+        "Healing",
+        "Summoning",
+        "Illusion",
+        "Mind Control",
+        "Nature Control",
+        "Shapeshifting"
+    ];
+
+    // Generate and insert the HTML for Attributes, Weapon Proficiencies, and Magic Proficiencies
+    document.getElementById("attributes").innerHTML = createTable("Attributes", attributes);
+    document.getElementById("weapon-proficiencies").innerHTML = createTable("Weapon Proficiencies", weaponProficiencies);
+    document.getElementById("magic-proficiencies").innerHTML = createTable("Magic Proficiencies", magicProficiencies);
+</script>
         </body>
         </html>
         
@@ -290,72 +278,72 @@
                 let healthState = ""
         
                 async function sendWoundSeverity() {
-                // Get the value from the input field
-                const severityInput = document.getElementById('severity-input').value.trim();
-                let severity;
+                    // Get the value from the input field
+                    const severityInput = document.getElementById('severity-input').value.trim();
+                    let severity;
 
-                // Map string inputs to severity values
-                const severityMap = {
-                    "S": 30, "s": 30, "Scratch": 30, "scratch": 30,
-                    "M": 40, "m": 40, "Minor": 40, "minor": 40,
-                    "H": 60, "h": 60, "Heavy": 60, "heavy": 60,
-                    "L": 120, "l": 120, "Lethal": 120, "lethal": 120
-                };
-
-                // Check if the input is a number or valid string and assign the corresponding severity value
-                if (severityMap[severityInput]) {
-                    severity = severityMap[severityInput];
-                } else if (["30", "40", "60", "120"].includes(severityInput)) {
-                    severity = Number(severityInput);
-                } else {
-                    document.getElementById('error-message').innerText = "Please enter a valid wound severity (30, 40, 60, 120, S/s/Scratch/scratch, M/m/Minor/minor, H/h/Heavy/heavy, L/l/Lethal/lethal).";
-                    return; // Stop the function if the input is invalid
-                }
-
-                // Clear any previous error message
-                document.getElementById('error-message').innerText = "";
-
-                // If healthState is not initialized, send an empty string as the health value
-                const healthStateToSend = healthState ? healthState : "";
-
-                try {
-                    // Prepare the request payload with wound severity and health state
-                    const payload = {
-                        wound_severity: severity,
-                        health: healthStateToSend // Include the extracted health state (empty if not initialized)
+                    // Map string inputs to severity values
+                    const severityMap = {
+                        "S": 30, "s": 30, "Scratch": 30, "scratch": 30,
+                        "M": 40, "m": 40, "Minor": 40, "minor": 40,
+                        "H": 60, "h": 60, "Heavy": 60, "heavy": 60,
+                        "L": 120, "l": 120, "Lethal": 120, "lethal": 120
                     };
 
-                    // Make the POST request to the server
-                    const response = await fetch('http://127.0.0.1:5000/receive_wound', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
+                    // Check if the input is a number or valid string and assign the corresponding severity value
+                    if (severityMap[severityInput]) {
+                        severity = severityMap[severityInput];
+                    } else if (["30", "40", "60", "120"].includes(severityInput)) {
+                        severity = Number(severityInput);
+                    } else {
+                        document.getElementById('error-message').innerText = "Please enter a valid wound severity (30, 40, 60, 120, S/s/Scratch/scratch, M/m/Minor/minor, H/h/Heavy/heavy, L/l/Lethal/lethal).";
+                        return; // Stop the function if the input is invalid
                     }
 
-                    const data = await response.json(); // Expect response as a JSON object
-                    // Extract the result (displayable string) from the response
-                    const result = data.result;
-                    const stringifiedData = JSON.stringify(data);
-                    const parsedData = JSON.parse(stringifiedData);
-                    const parsedData2 = JSON.parse(JSON.stringify(parsedData.result));
-                        // console.log(stringifiedData);
-                    // Now format and display the result string
-                    const formattedResult = extractResult(parsedData2);
-                    const formattedData = formatResultString(formattedResult);
-                    healthState = extractHealthFromString(parsedData2);
-                    // Display the formatted result in the #response-container
-                    document.getElementById('response-container').innerHTML = formattedData;
+                    // Clear any previous error message
+                    document.getElementById('error-message').innerText = "";
 
-                } catch (error) {
-                    console.error("Error while sending wound severity:", error);
+                    // If healthState is not initialized, send an empty string as the health value
+                    const healthStateToSend = healthState ? healthState : "";
+
+                    try {
+                        // Prepare the request payload with wound severity and health state
+                        const payload = {
+                            wound_severity: severity,
+                            health: healthStateToSend // Include the extracted health state (empty if not initialized)
+                        };
+
+                        // Make the POST request to the server
+                        const response = await fetch('http://127.0.0.1:5000/receive_wound', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+
+                        const data = await response.json(); // Expect response as a JSON object
+                        // Extract the result (displayable string) from the response
+                        const result = data.result;
+                        const stringifiedData = JSON.stringify(data);
+                        const parsedData = JSON.parse(stringifiedData);
+                        const parsedData2 = JSON.parse(JSON.stringify(parsedData.result));
+                            // console.log(stringifiedData);
+                        // Now format and display the result string
+                        const formattedResult = extractResult(parsedData2);
+                        const formattedData = formatResultString(formattedResult);
+                        healthState = extractHealthFromString(parsedData2);
+                        // Display the formatted result in the #response-container
+                        document.getElementById('response-container').innerHTML = formattedData;
+
+                    } catch (error) {
+                        console.error("Error while sending wound severity:", error);
+                    }
                 }
-}
 
                 // Assuming you already have these helper functions in place
                 function extractHealthFromString(data) {
@@ -417,14 +405,38 @@
                     }
                 }
 
-
+                const translations = {
+                        en: {
+                            titleMain: "Shapeshifter",
+                            titleRole: "Role-playing Game",
+                            titleHelper: "Mechanics helper page",
+                            labelCharacterName: "Character Name:",
+                            labelCharacterClass: "Character Class:"
+                        },
+                        pl: {
+                            titleMain: "Shapeshifter",
+                            titleRole: "Gra fabularna",
+                            titleHelper: "Strona wspierania mechaniki",
+                            labelCharacterName: "Imię postaci:",
+                            labelCharacterClass: "Klasa postaci:"
+                        }
+                    };
+                
+                function switchLanguage(language) {
+                    const languageData = translations[language];
+            
+                    Object.keys(languageData).forEach(key => {
+                        const element = document.getElementById(key);
+                        if (element) {
+                            element.innerText = languageData[key];
+                        }
+                    });
+                }
+    
             </script>
-        
         </body>
         </html>
-        
-        
-
+    </div>
 
 
 
@@ -439,23 +451,17 @@
     </a>
 </div>
 
-                        <script>
-        function switchLanguage(language) {
-            if (language === 'pl') {
-                document.body.classList.remove('lang-en');
-                document.body.classList.add('lang-pl');
-            } else {
-                document.body.classList.remove('lang-pl');
-                document.body.classList.add('lang-en');
-            }
+<script>
+    function switchLanguage(language) {
+        console.log("language switched to ", language)
+        if (language === 'pl') {
+            document.body.classList.remove('lang-en');
+            document.body.classList.add('lang-pl');
+        } else {
+            document.body.classList.remove('lang-pl');
+            document.body.classList.add('lang-en');
         }
+    }
 
-        function generateCharacter() {
-            let characterName = document.getElementById("character-name").value;
-            let characterClass = document.getElementById("character-class").value;
-            let output = "Character Name: " + characterName + ", Class: " + characterClass;
-
-            document.querySelector(".output").innerHTML = "<p class='en'>" + output + "</p><p class='pl'>" + output + "</p>";
-        }
-    </script>
+</script>
 
