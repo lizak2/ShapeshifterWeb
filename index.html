@@ -273,135 +273,149 @@
             <label for="severity-input">Enter Wound Severity (valid values: 30, 40, 60, 120 or S/s/Scratch/scratch for severity 30, M/m/Minor/minor for severity 40, H/h/Heavy/heavy for severity 60, L/l/Lethal/lethal for severity 120): </label>
             <input type="text" id="severity-input" placeholder="Enter severity value">
             <button onclick="sendWoundSeverity()">Send Wound Severity</button>
-        
+                    <!-- Add this button for refresh functionality -->
+            <button id="refresh-button" onclick="resetHealthState()">Refresh</button>
             <div id="response-container"></div> <!-- Container for the response -->
             <div id="error-message" class="error-message"></div> <!-- Container for error message -->
         
             <script>
-                let healthState = {}; // Initialize a variable to store health state
-        
-                async function sendWoundSeverity() {
-                    // Get the value from the input field
-                    const severityInput = document.getElementById('severity-input').value.trim();
-                    let severity;
-        
-                    // Map string inputs to severity values
-                    const severityMap = {
-                        "S": 30, "s": 30, "Scratch": 30, "scratch": 30,
-                        "M": 40, "m": 40, "Minor": 40, "minor": 40,
-                        "H": 60, "h": 60, "Heavy": 60, "heavy": 60,
-                        "L": 120, "l": 120, "Lethal": 120, "lethal": 120
-                    };
-        
-                    // Check if the input is a number or valid string and assign the corresponding severity value
-                    if (severityMap[severityInput]) {
-                        severity = severityMap[severityInput];
-                    } else if (["30", "40", "60", "120"].includes(severityInput)) {
-                        severity = Number(severityInput);
-                    } else {
-                        document.getElementById('error-message').innerText = "Please enter a valid wound severity (30, 40, 60, 120, S/s/Scratch/scratch, M/m/Minor/minor, H/h/Heavy/heavy, L/l/Lethal/lethal).";
-                        return; // Stop the function if the input is invalid
-                    }
-        
-                    // Clear any previous error message
-                    document.getElementById('error-message').innerText = "";
-        
-                    // Prepare the request payload with wound severity
-                    const payload = {
-                        wound_severity: severity
-                    };
-        
-                    try {
-                        const response = await fetch('http://127.0.0.1:5000/receive_wound', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(payload)
-                        });
-        
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-        
-                        const data = await response.json(); // Expect response as a JSON object
-                        // console.log(data);
-        
-                        // Extract the result (displayable string) from the response
-                        const result = data.result;
-                        // console.log(result);
-                        const stringifiedData = JSON.stringify(data);
-                        // console.log(stringifiedData);
-
-                        const parsedData = JSON.parse(stringifiedData);
-
-                        // console.log(parsedData.result);
-
-                        const parsedData2 = JSON.parse(JSON.stringify(parsedData.result));
-
-                        console.log(parsedData2);
-
-                        // Store the health state from the response
-                        healthState = extractHealthFromString(parsedData2);
-                        console.log("HealthState");
-                        console.log(healthState);
-
-                        // Directly replace newline characters with <br> tags for displaying
-                        const formattedResult = extractResult(parsedData2);
-                        const formattedData = formatResultString(formattedResult);
-
-                        
-                        // console.log(formattedData);
-
-                        // Display the formatted result in the #response-container
-                        document.getElementById('response-container').innerHTML = formattedData;
-        
-                    } catch (error) {
-                        console.error("Error while sending wound severity:", error);
-                    }
+                function resetHealthState() {
+                    healthState = "";  // Reset healthState to empty string
+                    document.getElementById('response-container').innerHTML = "";  // Optionally clear the response container
+                    document.getElementById('severity-input').value = "";  // Clear the input field
+                    console.log("Health state has been reset.");
                 }
 
-                        // Function to format the result for display
-                        function extractResult(inputString) {
-                            // Find the start of the result value
-                            const resultStart = inputString.indexOf('result: "') + 9;  // Add 9 to skip 'result: "'
-                            const resultEnd = inputString.indexOf('"', resultStart);  // Find the closing quote after the result
 
-                            // If we can't find the result string properly, return an error message
-                            if (resultStart === -1 || resultEnd === -1) {
-                                return 'Error: result field not found';
-                            }
+                let healthState = ""
+        
+                async function sendWoundSeverity() {
+                // Get the value from the input field
+                const severityInput = document.getElementById('severity-input').value.trim();
+                let severity;
 
-                            // Extract the result substring between the quotes
-                            const resultString = inputString.slice(resultStart, resultEnd);
+                // Map string inputs to severity values
+                const severityMap = {
+                    "S": 30, "s": 30, "Scratch": 30, "scratch": 30,
+                    "M": 40, "m": 40, "Minor": 40, "minor": 40,
+                    "H": 60, "h": 60, "Heavy": 60, "heavy": 60,
+                    "L": 120, "l": 120, "Lethal": 120, "lethal": 120
+                };
 
-                            // Return the result string
-                            return resultString;
-                        }
+                // Check if the input is a number or valid string and assign the corresponding severity value
+                if (severityMap[severityInput]) {
+                    severity = severityMap[severityInput];
+                } else if (["30", "40", "60", "120"].includes(severityInput)) {
+                    severity = Number(severityInput);
+                } else {
+                    document.getElementById('error-message').innerText = "Please enter a valid wound severity (30, 40, 60, 120, S/s/Scratch/scratch, M/m/Minor/minor, H/h/Heavy/heavy, L/l/Lethal/lethal).";
+                    return; // Stop the function if the input is invalid
+                }
 
-                        function formatResultString(resultString) {
-                            // Replace all occurrences of '\n' with actual newlines
-                            const formattedString = resultString.replace(/\\n/g, '\n');
-                            
-                            // Return the formatted string
-                            return formattedString;
-                        }
-                
-                        function extractHealthFromString(inputString) {
-                            // Define the regular expression to match everything from 'Health {' onward
-                            const regex = /health: (Health {[^}]*})/;
+                // Clear any previous error message
+                document.getElementById('error-message').innerText = "";
 
-                            // Use the regex to match the health object portion
-                            const match = inputString.match(regex);
+                // If healthState is not initialized, send an empty string as the health value
+                const healthStateToSend = healthState ? healthState : "";
 
-                            if (match) {
-                                // Return the matched content, excluding 'health: ' part
-                                return match[1].trim(); // match[1] contains the 'Health {...}' part
-                            } else {
-                                // Return a message if no match is found
-                                return "Health data not found";
-                            }
-                        }
+                try {
+                    // Prepare the request payload with wound severity and health state
+                    const payload = {
+                        wound_severity: severity,
+                        health: healthStateToSend // Include the extracted health state (empty if not initialized)
+                    };
+
+                    // Make the POST request to the server
+                    const response = await fetch('http://127.0.0.1:5000/receive_wound', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+
+                    const data = await response.json(); // Expect response as a JSON object
+                    // Extract the result (displayable string) from the response
+                    const result = data.result;
+                    const stringifiedData = JSON.stringify(data);
+                    const parsedData = JSON.parse(stringifiedData);
+                    const parsedData2 = JSON.parse(JSON.stringify(parsedData.result));
+                        // console.log(stringifiedData);
+                    // Now format and display the result string
+                    const formattedResult = extractResult(parsedData2);
+                    const formattedData = formatResultString(formattedResult);
+                    healthState = extractHealthFromString(parsedData2);
+                    // Display the formatted result in the #response-container
+                    document.getElementById('response-container').innerHTML = formattedData;
+
+                } catch (error) {
+                    console.error("Error while sending wound severity:", error);
+                }
+}
+
+                // Assuming you already have these helper functions in place
+                function extractHealthFromString(data) {
+                    // Example function that extracts health data from the response
+                    // Return the extracted health state (just the 'Health {...}' string)
+                    const healthRegex = /health: (Health {[^}]*})/;
+                    const match = JSON.stringify(data).match(healthRegex);
+                    if (match) {
+                        return match[1].trim(); // Remove 'health: ' and return just 'Health {...}'
+                    }
+                    return "Health data not found";
+                }
+
+                function formatResultString(resultString) {
+                    // Example function to format the result string for display (if needed)
+                    // Replace newlines with <br> for HTML rendering
+                    return resultString.replace(/\n/g, '<br>');
+                }
+
+                // Function to format the result for display
+                function extractResult(inputString) {
+                    // Find the start of the result value
+                    const resultStart = inputString.indexOf('result: "') + 9;  // Add 9 to skip 'result: "'
+                    const resultEnd = inputString.indexOf('"', resultStart);  // Find the closing quote after the result
+
+                    // If we can't find the result string properly, return an error message
+                    if (resultStart === -1 || resultEnd === -1) {
+                        return 'Error: result field not found';
+                    }
+
+                    // Extract the result substring between the quotes
+                    const resultString = inputString.slice(resultStart, resultEnd);
+
+                    // Return the result string
+                    return resultString;
+                }
+
+                function formatResultString(resultString) {
+                    // Replace all occurrences of '\n' with actual newlines
+                    const formattedString = resultString.replace(/\\n/g, '\n');
+                    
+                    // Return the formatted string
+                    return formattedString;
+                }
+        
+                function extractHealthFromString(inputString) {
+                    // Define the regular expression to match everything from 'Health {' onward
+                    const regex = /health: (Health {[^}]*})/;
+
+                    // Use the regex to match the health object portion
+                    const match = inputString.match(regex);
+
+                    if (match) {
+                        // Return the matched content, excluding 'health: ' part
+                        return match[1].trim(); // match[1] contains the 'Health {...}' part
+                    } else {
+                        // Return a message if no match is found
+                        return "Health data not found";
+                    }
+                }
 
 
             </script>
