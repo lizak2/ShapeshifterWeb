@@ -255,17 +255,17 @@
         </head>
         <body>
         
-            <h1>Wound Severity</h1>
-        
-            <!-- Input field for user to enter wound severity -->
-            <label for="severity-input">Enter Wound Severity (valid values: 30, 40, 60, 120 or S/s/Scratch/scratch for severity 30, M/m/Minor/minor for severity 40, H/h/Heavy/heavy for severity 60, L/l/Lethal/lethal for severity 120): </label>
-            <input type="text" id="severity-input" placeholder="Enter severity value">
-            <button onclick="sendWoundSeverity()">Send Wound Severity</button>
-                    <!-- Add this button for refresh functionality -->
+            <h1>Health calculations</h1>
+
+                    
+            <button onclick="sendWoundSeverity(30)">Scratch</button>
+            <button onclick="sendWoundSeverity(40)">Minor</button>
+            <button onclick="sendWoundSeverity(60)">Heavy</button>
+            <button onclick="sendWoundSeverity(120)">Lethal</button>
             <button id="refresh-button" onclick="resetHealthState()">Refresh</button>
-            <div id="response-container"></div> <!-- Container for the response -->
-            <div id="error-message" class="error-message"></div> <!-- Container for error message -->
-        
+                <div id="response-container"></div> <!-- Container for the response -->
+
+
             <script>
                 function resetHealthState() {
                     healthState = "";  // Reset healthState to empty string
@@ -277,31 +277,31 @@
 
                 let healthState = ""
         
-                async function sendWoundSeverity() {
+                async function sendWoundSeverity(severity) {
                     // Get the value from the input field
-                    const severityInput = document.getElementById('severity-input').value.trim();
-                    let severity;
+                    // const severityInput = document.getElementById('severity-input').value.trim();
+                    // let severity;
 
                     // Map string inputs to severity values
-                    const severityMap = {
-                        "S": 30, "s": 30, "Scratch": 30, "scratch": 30,
-                        "M": 40, "m": 40, "Minor": 40, "minor": 40,
-                        "H": 60, "h": 60, "Heavy": 60, "heavy": 60,
-                        "L": 120, "l": 120, "Lethal": 120, "lethal": 120
-                    };
+                    // const severityMap = {
+                    //     "S": 30, "s": 30, "Scratch": 30, "scratch": 30,
+                    //     "M": 40, "m": 40, "Minor": 40, "minor": 40,
+                    //     "H": 60, "h": 60, "Heavy": 60, "heavy": 60,
+                    //     "L": 120, "l": 120, "Lethal": 120, "lethal": 120
+                    // };
 
-                    // Check if the input is a number or valid string and assign the corresponding severity value
-                    if (severityMap[severityInput]) {
-                        severity = severityMap[severityInput];
-                    } else if (["30", "40", "60", "120"].includes(severityInput)) {
-                        severity = Number(severityInput);
-                    } else {
-                        document.getElementById('error-message').innerText = "Please enter a valid wound severity (30, 40, 60, 120, S/s/Scratch/scratch, M/m/Minor/minor, H/h/Heavy/heavy, L/l/Lethal/lethal).";
-                        return; // Stop the function if the input is invalid
-                    }
+                    // // Check if the input is a number or valid string and assign the corresponding severity value
+                    // if (severityMap[severityInput]) {
+                    //     severity = severityMap[severityInput];
+                    // } else if (["30", "40", "60", "120"].includes(severityInput)) {
+                    //     severity = Number(severityInput);
+                    // } else {
+                    //     document.getElementById('error-message').innerText = "Please enter a valid wound severity (30, 40, 60, 120, S/s/Scratch/scratch, M/m/Minor/minor, H/h/Heavy/heavy, L/l/Lethal/lethal).";
+                    //     return; // Stop the function if the input is invalid
+                    // }
 
                     // Clear any previous error message
-                    document.getElementById('error-message').innerText = "";
+                    // document.getElementById('error-message').innerText = "";
 
                     // If healthState is not initialized, send an empty string as the health value
                     const healthStateToSend = healthState ? healthState : "";
