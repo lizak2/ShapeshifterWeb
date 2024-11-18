@@ -273,13 +273,16 @@
             <button onclick="sendWoundSeverity(60)">Heavy</button>
             <button onclick="sendWoundSeverity(120)">Lethal</button>
             <button id="refresh-button" onclick="resetHealthState()">Refresh</button>
-                <div id="response-container"></div> <!-- Container for the response -->
 
+            <label>Health:</label>
+            <div id="buttons-container"></div> <!-- Container for the buttons -->
 
             <script>
                 function resetHealthState() {
                     healthState = "";  // Reset healthState to empty string
-                    document.getElementById('response-container').innerHTML = "";  // Optionally clear the response container
+                    // document.getElementById('response-container').innerHTML = "";  // Optionally clear the response container
+                    const totalWidth = "50%"; // The total width for each row (you can adjust this value)
+                    displayButtons(totalWidth)
                     console.log("Health state has been reset.");
                 }
 
@@ -318,9 +321,12 @@
                         const parsedData2 = JSON.parse(JSON.stringify(parsedData.result));
                         const parsedData3 = JSON.parse(JSON.stringify(parsedData.health));
                         healthState = parsedData3;
-
+                        // console.log(healthState);
                         // Display the formatted result in the #response-container
-                        document.getElementById('response-container').innerHTML = parsedData2;
+                                        // Example usage
+                        const totalWidth = "50%"; // The total width for each row (you can adjust this value)
+                        displayButtons(totalWidth); // Display the buttons in the container
+                        // document.getElementById('response-container').innerHTML = parsedData2;
 
                     } catch (error) {
                         console.error("Error while sending wound severity:", error);
@@ -343,7 +349,7 @@
                         const stringifiedData = JSON.stringify(data);
                         const parsedData = JSON.parse(stringifiedData);
                         const parsedData2 = JSON.parse(JSON.stringify(parsedData.result));
-                        console.log(parsedData2)
+                        // console.log(parsedData2)
 
                         document.getElementById('response-container-roll').innerHTML =  `You rolled ${parsedData2}!`;
 
@@ -351,6 +357,97 @@
                         console.error("Error while rolling:", error);
                     }
                     }
+
+                function displayButtons(totalWidth) {
+                    // Create the container element for buttons
+                    const container = document.getElementById("buttons-container");
+                    container.innerHTML = ""; // Clear any previous content
+
+                    // Button row definitions
+                    const buttonRows = [
+                        { buttonCount: 4 },
+                        { buttonCount: 3 },
+                        { buttonCount: 2 },
+                        { buttonCount: 1 }
+                    ];
+
+                    const regex = /scratches: \[([^\]]*)\], minor_wounds: \[([^\]]*)\], heavy_wounds: \[([^\]]*)\], lethal_wounds: \[([^\]]*)\]/;
+                    const match = healthState.match(regex);
+                    
+                    let scratches = [];
+                    let minorWounds = [];
+                    let heavyWounds = [];
+                    let lethalWounds = [];
+
+                    if (match) {
+                        scratches = match[1].split(',').map(item => item.trim());
+                        minorWounds = match[2].split(',').map(item => item.trim());
+                        heavyWounds = match[3].split(',').map(item => item.trim());
+                        lethalWounds = match[4].split(',').map(item => item.trim());
+                    }
+
+                    // Extract each wound category (string array)
+
+                    console.log(scratches);
+                    console.log(minorWounds);
+                    console.log(heavyWounds);
+                    console.log(lethalWounds);
+
+                    // Loop through each row definition
+                    buttonRows.forEach(row => {
+                        // Create the row element
+                        const rowDiv = document.createElement("div");
+                        rowDiv.style.display = "flex"; // Flexbox to align buttons in a row
+                        rowDiv.style.width = totalWidth; // Set the total width of the row
+
+                        // Calculate width per button in the row
+                        const buttonWidth = `${100 / row.buttonCount}%`; // Percent-based width
+                        
+                        // Create buttons for the row
+                        for (let i = 0; i < row.buttonCount; i++) {
+                            let color = "grey";
+                            let textContent = ""
+                            if (row.buttonCount === 4) {
+                                console.log(scratches[i])
+
+                                textContent = "Scratch"
+                                if (scratches[i] === "30") {
+                                    color = "red"
+                                }
+                            } else if (row.buttonCount === 3) {
+                                textContent = "Minor"
+                                if (minorWounds[i] === "40") {
+                                    color = "red"
+                                }
+                            } else if ((row.buttonCount === 2)) {
+                                textContent = "Heavy"
+                                if (heavyWounds[i] === "60") {
+                                    color = "red"
+                                }
+                            } else if ((row.buttonCount === 1)) {
+                                textContent = "Lethal"
+                                if (lethalWounds[i] === "120") {
+                                    color = "red"
+                                }
+                            }
+                            const button = document.createElement("button");
+                            button.textContent = textContent;
+                            button.style.flex = "1"; // Ensure buttons stretch equally
+                            button.style.backgroundColor = color; // Set button color to blue
+                            button.style.border = "none"; // Remove default border
+                            button.style.color = "white"; // Set text color to white
+                            button.style.padding = "10px"; // Padding for the button
+                            button.style.margin = "2px"; // Space between buttons
+                            button.style.width = buttonWidth; // Set width according to button count
+                            rowDiv.appendChild(button);
+                        }
+
+                        // Append the row to the container
+                        container.appendChild(rowDiv);
+                    });
+                }
+
+
 
                 const translations = {
                         en: {
