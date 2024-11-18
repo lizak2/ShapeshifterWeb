@@ -257,7 +257,17 @@
         
             <h1>Health calculations</h1>
 
-                    
+
+            <div style="display: flex; align-items: center;">
+                <button onclick="roll()">Roll d20</button>
+                <span id="response-container-roll" style="margin-left: 10px;"></span>
+            </div>
+
+            <label>2-5 Scratch</label>
+            <label>6-12 Minor wound</label>
+            <label>13-18 Heavy wound</label>
+            <label>19-20 Lethal</label>
+
             <button onclick="sendWoundSeverity(30)">Scratch</button>
             <button onclick="sendWoundSeverity(40)">Minor</button>
             <button onclick="sendWoundSeverity(60)">Heavy</button>
@@ -274,34 +284,9 @@
                     console.log("Health state has been reset.");
                 }
 
-
                 let healthState = ""
         
                 async function sendWoundSeverity(severity) {
-                    // Get the value from the input field
-                    // const severityInput = document.getElementById('severity-input').value.trim();
-                    // let severity;
-
-                    // Map string inputs to severity values
-                    // const severityMap = {
-                    //     "S": 30, "s": 30, "Scratch": 30, "scratch": 30,
-                    //     "M": 40, "m": 40, "Minor": 40, "minor": 40,
-                    //     "H": 60, "h": 60, "Heavy": 60, "heavy": 60,
-                    //     "L": 120, "l": 120, "Lethal": 120, "lethal": 120
-                    // };
-
-                    // // Check if the input is a number or valid string and assign the corresponding severity value
-                    // if (severityMap[severityInput]) {
-                    //     severity = severityMap[severityInput];
-                    // } else if (["30", "40", "60", "120"].includes(severityInput)) {
-                    //     severity = Number(severityInput);
-                    // } else {
-                    //     document.getElementById('error-message').innerText = "Please enter a valid wound severity (30, 40, 60, 120, S/s/Scratch/scratch, M/m/Minor/minor, H/h/Heavy/heavy, L/l/Lethal/lethal).";
-                    //     return; // Stop the function if the input is invalid
-                    // }
-
-                    // Clear any previous error message
-                    // document.getElementById('error-message').innerText = "";
 
                     // If healthState is not initialized, send an empty string as the health value
                     const healthStateToSend = healthState ? healthState : "";
@@ -328,19 +313,12 @@
                         }
 
                         const data = await response.json(); // Expect response as a JSON object
-                        // console.log(data)
                         // Extract the result (displayable string) from the response
-                        const result = data.result;
                         const stringifiedData = JSON.stringify(data);
                         const parsedData = JSON.parse(stringifiedData);
                         const parsedData2 = JSON.parse(JSON.stringify(parsedData.result));
                         const parsedData3 = JSON.parse(JSON.stringify(parsedData.health));
-                        console.log(parsedData3);
-                        // Now format and display the result string
-                        // const formattedResult = extractResult(parsedData2);
-                        // const formattedData = formatResultString(formattedResult);
                         healthState = parsedData3;
-                        console.log(healthState);
 
                         // Display the formatted result in the #response-container
                         document.getElementById('response-container').innerHTML = parsedData2;
@@ -350,65 +328,30 @@
                     }
                 }
 
-                // Assuming you already have these helper functions in place
-                function extractHealthFromString(data) {
-                    // Example function that extracts health data from the response
-                    // Return the extracted health state (just the 'Health {...}' string)
-                    const healthRegex = /health: (Health {[^}]*})/;
-                    const match = JSON.stringify(data).match(healthRegex);
-                    if (match) {
-                        return match[1].trim(); // Remove 'health: ' and return just 'Health {...}'
+                async function roll() {
+                    try {
+                        // Make the POST request to the server
+                        const response = await fetch('https://shapeshifter-python.onrender.com/roll', {
+                        // const response = await fetch('http://localhost:5000/roll', {
+                            method: 'POST'
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+
+                        const data = await response.json(); // Expect response as a JSON object
+                        const stringifiedData = JSON.stringify(data);
+                        const parsedData = JSON.parse(stringifiedData);
+                        const parsedData2 = JSON.parse(JSON.stringify(parsedData.result));
+                        console.log(parsedData2)
+
+                        document.getElementById('response-container-roll').innerHTML =  `You rolled ${parsedData2}!`;
+
+                    } catch (error) {
+                        console.error("Error while rolling:", error);
                     }
-                    return "Health data not found";
-                }
-
-                function formatResultString(resultString) {
-                    // Example function to format the result string for display (if needed)
-                    // Replace newlines with <br> for HTML rendering
-                    return resultString.replace(/\n/g, '<br>');
-                }
-
-                // Function to format the result for display
-                function extractResult(inputString) {
-                    // Find the start of the result value
-                    const resultStart = inputString.indexOf('result: "') + 9;  // Add 9 to skip 'result: "'
-                    const resultEnd = inputString.indexOf('"', resultStart);  // Find the closing quote after the result
-
-                    // If we can't find the result string properly, return an error message
-                    if (resultStart === -1 || resultEnd === -1) {
-                        return 'Error: result field not found';
                     }
-
-                    // Extract the result substring between the quotes
-                    const resultString = inputString.slice(resultStart, resultEnd);
-
-                    // Return the result string
-                    return resultString;
-                }
-
-                function formatResultString(resultString) {
-                    // Replace all occurrences of '\n' with actual newlines
-                    const formattedString = resultString.replace(/\\n/g, '\n');
-                    
-                    // Return the formatted string
-                    return formattedString;
-                }
-        
-                function extractHealthFromString(inputString) {
-                    // Define the regular expression to match everything from 'Health {' onward
-                    const regex = /health: (Health {[^}]*})/;
-
-                    // Use the regex to match the health object portion
-                    const match = inputString.match(regex);
-
-                    if (match) {
-                        // Return the matched content, excluding 'health: ' part
-                        return match[1].trim(); // match[1] contains the 'Health {...}' part
-                    } else {
-                        // Return a message if no match is found
-                        return "Health data not found";
-                    }
-                }
 
                 const translations = {
                         en: {
