@@ -314,7 +314,8 @@
                         };
 
                         // Make the POST request to the server
-                        const response = await fetch('http://127.0.0.1:5000/receive_wound', {
+                        const response = await fetch('https://shapeshifter-python.onrender.com/receive_wound', {
+                        // const response = await fetch('http://localhost:5000/receive_wound', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -327,18 +328,22 @@
                         }
 
                         const data = await response.json(); // Expect response as a JSON object
+                        // console.log(data)
                         // Extract the result (displayable string) from the response
                         const result = data.result;
                         const stringifiedData = JSON.stringify(data);
                         const parsedData = JSON.parse(stringifiedData);
                         const parsedData2 = JSON.parse(JSON.stringify(parsedData.result));
-                            // console.log(stringifiedData);
+                        const parsedData3 = JSON.parse(JSON.stringify(parsedData.health));
+                        console.log(parsedData3);
                         // Now format and display the result string
-                        const formattedResult = extractResult(parsedData2);
-                        const formattedData = formatResultString(formattedResult);
-                        healthState = extractHealthFromString(parsedData2);
+                        // const formattedResult = extractResult(parsedData2);
+                        // const formattedData = formatResultString(formattedResult);
+                        healthState = parsedData3;
+                        console.log(healthState);
+
                         // Display the formatted result in the #response-container
-                        document.getElementById('response-container').innerHTML = formattedData;
+                        document.getElementById('response-container').innerHTML = parsedData2;
 
                     } catch (error) {
                         console.error("Error while sending wound severity:", error);
