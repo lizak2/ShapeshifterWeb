@@ -108,12 +108,12 @@
 
         <!-- Attributes Section: 5 checkboxes for each attribute -->
         <div id="attributes"></div>
-        <div id="weapon-proficiencies"></div>
+        <div id="combat-proficiencies"></div>
         <div id="magic-proficiencies"></div>
        
 <!-- Attributes Section: 5 checkboxes for each attribute -->
 <div id="attributes"></div>
-<div id="weapon-proficiencies"></div>
+<div id="combat-proficiencies"></div>
 <div id="magic-proficiencies"></div>
 
 <script>
@@ -198,8 +198,8 @@
     ];
 
     // Define Weapon Proficiencies
-    const weaponProficiencies = [
-        "Hand-to-Hand Combat",
+    const combatProficiencies = [
+        "Hand-to-Hand",
         "One-Handed",
         "Two-Handed",
         "Polearms",
@@ -207,7 +207,7 @@
         "Bows",
         "Crossbows",
         "Pyrotechnics",
-        "Black Powder Firearms"
+        "Firearms"
     ];
 
     // Define Magic Proficiencies
@@ -226,7 +226,7 @@
 
     // Generate and insert the HTML for Attributes, Weapon Proficiencies, and Magic Proficiencies
     document.getElementById("attributes").innerHTML = createTable("Attributes", attributes);
-    document.getElementById("weapon-proficiencies").innerHTML = createTable("Weapon Proficiencies", weaponProficiencies);
+    document.getElementById("combat-proficiencies").innerHTML = createTable("Weapon Proficiencies", combatProficiencies);
     document.getElementById("magic-proficiencies").innerHTML = createTable("Magic Proficiencies", magicProficiencies);
 </script>
         </body>
