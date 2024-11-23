@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shapeshifter</title>
-    
+
     <!-- Language switcher with flags -->
     <div class="flag-container">
-        <img src="https://upload.wikimedia.org/wikipedia/en/1/12/Flag_of_Poland.svg" alt="Polish Flag" id="pl-flag" onclick="switchLanguage('pl')">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg" alt="English Flag" id="en-flag" onclick="switchLanguage('en')">
+        <img src="https://upload.wikimedia.org/wikipedia/en/1/12/Flag_of_Poland.svg" alt="Polish Flag" id="pl-flag"
+            onclick="switchLanguage('pl')">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg" alt="English Flag"
+            id="en-flag" onclick="switchLanguage('en')">
     </div>
-    
+
 
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f9;
-            color: #333;
+            background-color: rgba(84, 65, 42, 0.582);
+            color: #000000;
             margin: 0;
             padding: 20px;
         }
-        h1 {
+
+        h1, h2, h3 {
             text-align: center;
         }
+
         .container {
             max-width: 800px;
             margin: 0 auto;
@@ -31,35 +36,43 @@
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
+
         .flag-container {
             text-align: center;
             margin-bottom: 20px;
         }
+
         .flag-container img {
             width: 40px;
             height: 30px;
             margin: 10px;
             cursor: pointer;
         }
+
         .form-group {
             margin-bottom: 15px;
         }
+
         label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
         }
+
         input[type="checkbox"] {
             margin-right: 10px;
         }
+
         .checkbox-group {
             display: flex;
             flex-wrap: wrap;
         }
+
         .checkbox-group label {
             margin-right: 15px;
             width: 120px;
         }
+
         button {
             background-color: #007bff;
             color: white;
@@ -69,427 +82,509 @@
             border-radius: 4px;
             font-size: 16px;
         }
+
         button:hover {
             background-color: #0056b3;
         }
+
         .output {
             margin-top: 20px;
             padding: 10px;
             background: #e9ecef;
             border-radius: 4px;
         }
+
+        /* table {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        table td {
+            padding: 5px;
+            text-align: center;
+        } */
+
         .error {
             color: red;
             font-weight: bold;
         }
     </style>
 </head>
+
 <body>
-    <h1 id="title-main">Shapeshifter</h1>
-    <h2 id="title-role" style="text-align: center;">Role-playing Game</h2>
-    <h3 id="title-helper" style="text-align: center;">Mechanics helper page</h3>
+    <h1>Shapeshifter</h1>
+    <h2>Role-playing Game</h2>
+    <h3>Mechanics Helper Page</h3>
 
     <div class="container">
         <div class="form-group">
             <label id="label-character-name" for="character-name">Character Name:</label>
             <input type="text" id="character-name" placeholder="Enter character name">
         </div>
-        <div class="form-group">
-            <label id="label-character-class" for="character-class">Character Class:</label>
-            <select id="character-class">
-                <option value="">Select Class</option>
-                <option value="Warrior">Warrior</option>
-                <option value="Mage">Mage</option>
-                <option value="Rogue">Rogue</option>
-                <option value="Ranger">Ranger</option>
-            </select>
+
+        <!-- Display Current Character Level -->
+        <div id="character-level-display" class="output">
+            <p id="current-character-level">Current Character Level: 0</p>
         </div>
 
+        <!-- Input for Experience -->
+        <div class="form-group">
+            <label for="experience">Experience:</label>
+            <input type="number" id="experience" placeholder="Enter experience points" oninput="calculateLevels()">
+        </div>
+
+        <!-- Result Display -->
+        <div id="result" class="output"></div>
+
+        <button onclick="calculateLevels()">Calculate Levels</button>
 
         <!-- Attributes Section: 5 checkboxes for each attribute -->
         <div id="attributes"></div>
         <div id="combat-proficiencies"></div>
         <div id="magic-proficiencies"></div>
-       
-<!-- Attributes Section: 5 checkboxes for each attribute -->
-<div id="attributes"></div>
-<div id="combat-proficiencies"></div>
-<div id="magic-proficiencies"></div>
 
-<script>
-    // Function to create an Attribute or Proficiency table
-    function createTable(attributeName, options) {
-        let tableHtml = `<div class="form-group">
+        <script>
+            // Update Current Character Level
+            function updateCharacterLevel() {
+                // Count checked attribute checkboxes
+                const attributeCheckboxes = document.querySelectorAll('#attributes input[type="checkbox"]');
+                const attributeLevel = Array.from(attributeCheckboxes).filter(cb => cb.checked).length;
+
+                // Count checked weapon proficiency checkboxes
+                const weaponCheckboxes = document.querySelectorAll('#combat-proficiencies input[type="checkbox"]');
+                const weaponProficiencyLevel = Array.from(weaponCheckboxes).filter(cb => cb.checked).length;
+
+                // Count checked magic proficiency checkboxes
+                const magicCheckboxes = document.querySelectorAll('#magic-proficiencies input[type="checkbox"]');
+                const magicProficiencyLevel = Array.from(magicCheckboxes).filter(cb => cb.checked).length;
+
+                // Calculate character level
+                const characterLevel = attributeLevel + weaponProficiencyLevel + magicProficiencyLevel;
+
+                // Update the Current Character Level display
+                document.getElementById("current-character-level").innerText = `Current Character Level: ${characterLevel}`;
+            }
+
+            // Calculate total levels checked for a section
+            function calculateCheckedLevels(sectionId) {
+                const checkboxes = document.querySelectorAll(`#${sectionId} input[type="checkbox"]`);
+                let levelSum = 0;
+                checkboxes.forEach((checkbox) => {
+                    if (checkbox.checked) {
+                        levelSum += parseInt(checkbox.getAttribute("data-level"));
+                    }
+                });
+                return levelSum;
+            }
+
+            // Calculate levels purchasable with experience
+            function calculateLevels() {
+                const experience = parseInt(document.getElementById("experience").value) || 0;
+
+                let attributeLevel = calculateCheckedLevels("attributes");
+                let weaponProficiencyLevel = calculateCheckedLevels("combat-proficiencies");
+                let magicProficiencyLevel = calculateCheckedLevels("magic-proficiencies");
+
+                let characterLevel = parseInt(document.getElementById("current-character-level").innerText.replace("Current Character Level: ", ""));
+
+                let levelsToBuy = 0;
+                let remainingExperience = experience;
+                let nextLevelCost = 10 + (characterLevel * 10); // Starting cost for the first level
+
+                while (remainingExperience >= nextLevelCost) {
+                    remainingExperience -= nextLevelCost;
+                    levelsToBuy++;
+                    characterLevel++;
+                    nextLevelCost += 10; // Increment the cost for the next level
+                }
+
+                document.getElementById("result").innerHTML = `
+                    <p>New Character Level: ${characterLevel}</p>
+                    <p>Levels Buyable: ${levelsToBuy}</p>
+                    <p>Remaining Experience: ${remainingExperience}</p>
+                `;
+            }
+
+            // Function to create an Attribute or Proficiency table
+            function createTable(attributeName, options) {
+                let tableHtml = `<div class="form-group">
                             <label>${attributeName}:</label>
                             <table border="1">`;
-        options.forEach((option) => {
-            tableHtml += `<tr>
+                options.forEach((option) => {
+                    tableHtml += `<tr>
                             <td><label for="${option.toLowerCase().replace(/\s+/g, '')}">${option}:</label></td>
                             <td>`;
-            // Generate checkboxes for levels 1 to 5
-            for (let i = 1; i <= 5; i++) {
-                tableHtml += `<input type="checkbox" id="${option.toLowerCase().replace(/\s+/g, '')}-${i}" class="${option.toLowerCase().replace(/\s+/g, '')}" data-level="${i}" onclick="updateCheckboxes(this)">`;
-            }
-            tableHtml += `</td>
+                    // Generate checkboxes for levels 1 to 5
+                    for (let i = 1; i <= 5; i++) {
+                        tableHtml += `<input type="checkbox" id="${option.toLowerCase().replace(/\s+/g, '')}-${i}" class="${option.toLowerCase().replace(/\s+/g, '')}" data-level="${i}" onclick="updateCheckboxes(this)">`;
+                    }
+                    tableHtml += `</td>
                           <td class="checkbox-count" id="${option.toLowerCase().replace(/\s+/g, '')}-count">+0</td>
                           </tr>`;
-        });
-        tableHtml += `</table>
+                });
+                tableHtml += `</table>
                       </div>`;
-    
-        return tableHtml;
-    }
 
-    function updateCheckboxes(checkbox) {
-        let level = parseInt(checkbox.getAttribute('data-level'));
-        let checkboxes = document.querySelectorAll(`.${checkbox.classList[0]}`);
-        let countElement = document.getElementById(`${checkbox.classList[0]}-count`);
+                return tableHtml;
+            }
 
-        if (checkbox.checked) {
-            // Check all checkboxes from level 1 up to and including the clicked level
-            checkboxes.forEach(function(cb) {
-                let cbLevel = parseInt(cb.getAttribute('data-level'));
-                if (cbLevel <= level) {
-                    cb.checked = true;
+            function updateCheckboxes(checkbox) {
+                let level = parseInt(checkbox.getAttribute('data-level'));
+                let checkboxes = document.querySelectorAll(`.${checkbox.classList[0]}`);
+                let countElement = document.getElementById(`${checkbox.classList[0]}-count`);
+
+                if (checkbox.checked) {
+                    // Check all checkboxes from level 1 up to and including the clicked level
+                    checkboxes.forEach(function (cb) {
+                        let cbLevel = parseInt(cb.getAttribute('data-level'));
+                        if (cbLevel <= level) {
+                            cb.checked = true;
+                        }
+                    });
+                } else {
+                    // Uncheck the boxes to the right of the clicked level, but keep the clicked level unchecked
+                    checkboxes.forEach(function (cb) {
+                        let cbLevel = parseInt(cb.getAttribute('data-level'));
+                        if (cbLevel > level) {
+                            cb.checked = false;
+                        }
+                    });
                 }
-            });
-        } else {
-            // Uncheck the boxes to the right of the clicked level, but keep the clicked level unchecked
-            checkboxes.forEach(function(cb) {
-                let cbLevel = parseInt(cb.getAttribute('data-level'));
-                if (cbLevel > level) {
-                    cb.checked = false;
+
+                // Special handling for level 1
+                if (level === 1) {
+                    if (!checkbox.checked) {
+                        // If level 1 is unchecked, uncheck all checkboxes (reset to level 0)
+                        checkboxes.forEach(function (cb) {
+                            cb.checked = false;
+                        });
+                    } else {
+                        // If level 1 is checked, ensure only level 1 is checked and others are unchecked
+                        checkboxes.forEach(function (cb) {
+                            let cbLevel = parseInt(cb.getAttribute('data-level'));
+                            if (cbLevel === 1) {
+                                cb.checked = true;
+                            } else {
+                                cb.checked = false;
+                            }
+                        });
+                    }
                 }
-            });
+
+                // Update the count of checked checkboxes
+                let tickedCheckboxes = Array.from(checkboxes).filter(cb => cb.checked).length;
+                countElement.innerText = `+${tickedCheckboxes}`;
+                updateCharacterLevel();
+            }
+
+            // Define Attributes
+            const attributes = [
+                "Strength",
+                "Agility",
+                "Perception",
+                "Wisdom",
+                "Charisma"
+            ];
+
+            // Define Weapon Proficiencies
+            const combatProficiencies = [
+                "Hand-to-Hand",
+                "One-Handed",
+                "Two-Handed",
+                "Polearms",
+                "Throwing",
+                "Bows",
+                "Crossbows",
+                "Pyrotechnics",
+                "Firearms"
+            ];
+
+            // Define Magic Proficiencies
+            const magicProficiencies = [
+                "Elements",
+                "Offensive",
+                "Defensive",
+                "Auras",
+                "Healing",
+                "Summoning",
+                "Illusion",
+                "Mind Control",
+                "Nature Control",
+                "Shapeshifting"
+            ];
+
+            // Generate and insert the HTML for Attributes, Weapon Proficiencies, and Magic Proficiencies
+            document.getElementById("attributes").innerHTML = createTable("Attributes", attributes);
+            document.getElementById("combat-proficiencies").innerHTML = createTable("Weapon Proficiencies", combatProficiencies);
+            document.getElementById("magic-proficiencies").innerHTML = createTable("Magic Proficiencies", magicProficiencies);
+        </script>
+</body>
+
+
+</html>
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wound Severity</title>
+    <style>
+        #response-container {
+            white-space: pre-wrap;
+            /* Keeps line breaks */
+            font-family: monospace;
+            /* Optional: Monospaced font for better alignment */
+            margin-top: 20px;
+            font-size: 14px;
+            /* Optional: Adjust font size */
         }
 
-        // Special handling for level 1
-        if (level === 1) {
-            if (!checkbox.checked) {
-                // If level 1 is unchecked, uncheck all checkboxes (reset to level 0)
-                checkboxes.forEach(function(cb) {
-                    cb.checked = false;
+        .error-message {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Health calculations</h1>
+
+
+    <div style="display: flex; align-items: center;">
+        <button onclick="roll()">Roll d20</button>
+        <span id="response-container-roll" style="margin-left: 10px;"></span>
+    </div>
+
+    <label>2-5 Scratch</label>
+    <label>6-12 Minor wound</label>
+    <label>13-18 Heavy wound</label>
+    <label>19-20 Lethal</label>
+
+    <button onclick="sendWoundSeverity(30)">Scratch</button>
+    <button onclick="sendWoundSeverity(40)">Minor</button>
+    <button onclick="sendWoundSeverity(60)">Heavy</button>
+    <button onclick="sendWoundSeverity(120)">Lethal</button>
+    <button id="refresh-button" onclick="resetHealthState()">Refresh</button>
+
+    <label>Health:</label>
+    <div id="buttons-container"></div> <!-- Container for the buttons -->
+
+    <script>
+        function resetHealthState() {
+            healthState = "";  // Reset healthState to empty string
+            // document.getElementById('response-container').innerHTML = "";  // Optionally clear the response container
+            const totalWidth = "50%"; // The total width for each row (you can adjust this value)
+            displayButtons(totalWidth)
+            console.log("Health state has been reset.");
+        }
+
+        let healthState = ""
+
+        async function sendWoundSeverity(severity) {
+
+            // If healthState is not initialized, send an empty string as the health value
+            const healthStateToSend = healthState ? healthState : "";
+
+            try {
+                // Prepare the request payload with wound severity and health state
+                const payload = {
+                    wound_severity: severity,
+                    health: healthStateToSend // Include the extracted health state (empty if not initialized)
+                };
+
+                // Make the POST request to the server
+                const response = await fetch('https://shapeshifter-python.onrender.com/receive_wound', {
+                    // const response = await fetch('http://localhost:5000/receive_wound', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
                 });
-            } else {
-                // If level 1 is checked, ensure only level 1 is checked and others are unchecked
-                checkboxes.forEach(function(cb) {
-                    let cbLevel = parseInt(cb.getAttribute('data-level'));
-                    if (cbLevel === 1) {
-                        cb.checked = true;
-                    } else {
-                        cb.checked = false;
-                    }
-                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json(); // Expect response as a JSON object
+                // Extract the result (displayable string) from the response
+                const stringifiedData = JSON.stringify(data);
+                const parsedData = JSON.parse(stringifiedData);
+                const parsedData2 = JSON.parse(JSON.stringify(parsedData.result));
+                const parsedData3 = JSON.parse(JSON.stringify(parsedData.health));
+                healthState = parsedData3;
+                // console.log(healthState);
+                // Display the formatted result in the #response-container
+                // Example usage
+                const totalWidth = "50%"; // The total width for each row (you can adjust this value)
+                displayButtons(totalWidth); // Display the buttons in the container
+                // document.getElementById('response-container').innerHTML = parsedData2;
+
+            } catch (error) {
+                console.error("Error while sending wound severity:", error);
             }
         }
 
-        // Update the count of checked checkboxes
-        let tickedCheckboxes = Array.from(checkboxes).filter(cb => cb.checked).length;
-        countElement.innerText = `+${tickedCheckboxes}`;
-    }
+        async function roll() {
+            try {
+                // Make the POST request to the server
+                const response = await fetch('https://shapeshifter-python.onrender.com/roll', {
+                    // const response = await fetch('http://localhost:5000/roll', {
+                    method: 'POST'
+                });
 
-    // Define Attributes
-    const attributes = [
-        "Strength",
-        "Agility",
-        "Perception",
-        "Wisdom",
-        "Charisma"
-    ];
-
-    // Define Weapon Proficiencies
-    const combatProficiencies = [
-        "Hand-to-Hand",
-        "One-Handed",
-        "Two-Handed",
-        "Polearms",
-        "Throwing",
-        "Bows",
-        "Crossbows",
-        "Pyrotechnics",
-        "Firearms"
-    ];
-
-    // Define Magic Proficiencies
-    const magicProficiencies = [
-        "Elements",
-        "Offensive",
-        "Defensive",
-        "Auras",
-        "Healing",
-        "Summoning",
-        "Illusion",
-        "Mind Control",
-        "Nature Control",
-        "Shapeshifting"
-    ];
-
-    // Generate and insert the HTML for Attributes, Weapon Proficiencies, and Magic Proficiencies
-    document.getElementById("attributes").innerHTML = createTable("Attributes", attributes);
-    document.getElementById("combat-proficiencies").innerHTML = createTable("Weapon Proficiencies", combatProficiencies);
-    document.getElementById("magic-proficiencies").innerHTML = createTable("Magic Proficiencies", magicProficiencies);
-</script>
-        </body>
-        </html>
-        
-
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Wound Severity</title>
-            <style>
-                #response-container {
-                    white-space: pre-wrap; /* Keeps line breaks */
-                    font-family: monospace; /* Optional: Monospaced font for better alignment */
-                    margin-top: 20px;
-                    font-size: 14px; /* Optional: Adjust font size */
-                }
-        
-                .error-message {
-                    color: red;
-                    font-weight: bold;
-                }
-            </style>
-        </head>
-        <body>
-        
-            <h1>Health calculations</h1>
-
-
-            <div style="display: flex; align-items: center;">
-                <button onclick="roll()">Roll d20</button>
-                <span id="response-container-roll" style="margin-left: 10px;"></span>
-            </div>
-
-            <label>2-5 Scratch</label>
-            <label>6-12 Minor wound</label>
-            <label>13-18 Heavy wound</label>
-            <label>19-20 Lethal</label>
-
-            <button onclick="sendWoundSeverity(30)">Scratch</button>
-            <button onclick="sendWoundSeverity(40)">Minor</button>
-            <button onclick="sendWoundSeverity(60)">Heavy</button>
-            <button onclick="sendWoundSeverity(120)">Lethal</button>
-            <button id="refresh-button" onclick="resetHealthState()">Refresh</button>
-
-            <label>Health:</label>
-            <div id="buttons-container"></div> <!-- Container for the buttons -->
-
-            <script>
-                function resetHealthState() {
-                    healthState = "";  // Reset healthState to empty string
-                    // document.getElementById('response-container').innerHTML = "";  // Optionally clear the response container
-                    const totalWidth = "50%"; // The total width for each row (you can adjust this value)
-                    displayButtons(totalWidth)
-                    console.log("Health state has been reset.");
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
-                let healthState = ""
-        
-                async function sendWoundSeverity(severity) {
+                const data = await response.json(); // Expect response as a JSON object
+                const stringifiedData = JSON.stringify(data);
+                const parsedData = JSON.parse(stringifiedData);
+                const parsedData2 = JSON.parse(JSON.stringify(parsedData.result));
+                // console.log(parsedData2)
 
-                    // If healthState is not initialized, send an empty string as the health value
-                    const healthStateToSend = healthState ? healthState : "";
+                document.getElementById('response-container-roll').innerHTML = `You rolled ${parsedData2}!`;
 
-                    try {
-                        // Prepare the request payload with wound severity and health state
-                        const payload = {
-                            wound_severity: severity,
-                            health: healthStateToSend // Include the extracted health state (empty if not initialized)
-                        };
+            } catch (error) {
+                console.error("Error while rolling:", error);
+            }
+        }
 
-                        // Make the POST request to the server
-                        const response = await fetch('https://shapeshifter-python.onrender.com/receive_wound', {
-                        // const response = await fetch('http://localhost:5000/receive_wound', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(payload)
-                        });
+        function displayButtons(totalWidth) {
+            // Create the container element for buttons
+            const container = document.getElementById("buttons-container");
+            container.innerHTML = ""; // Clear any previous content
 
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
+            // Button row definitions
+            const buttonRows = [
+                { buttonCount: 4 },
+                { buttonCount: 3 },
+                { buttonCount: 2 },
+                { buttonCount: 1 }
+            ];
+
+            const regex = /scratches: \[([^\]]*)\], minor_wounds: \[([^\]]*)\], heavy_wounds: \[([^\]]*)\], lethal_wounds: \[([^\]]*)\]/;
+            const match = healthState.match(regex);
+
+            let scratches = [];
+            let minorWounds = [];
+            let heavyWounds = [];
+            let lethalWounds = [];
+
+            if (match) {
+                scratches = match[1].split(',').map(item => item.trim());
+                minorWounds = match[2].split(',').map(item => item.trim());
+                heavyWounds = match[3].split(',').map(item => item.trim());
+                lethalWounds = match[4].split(',').map(item => item.trim());
+            }
+
+            // Extract each wound category (string array)
+
+            console.log(scratches);
+            console.log(minorWounds);
+            console.log(heavyWounds);
+            console.log(lethalWounds);
+
+            // Loop through each row definition
+            buttonRows.forEach(row => {
+                // Create the row element
+                const rowDiv = document.createElement("div");
+                rowDiv.style.display = "flex"; // Flexbox to align buttons in a row
+                rowDiv.style.width = totalWidth; // Set the total width of the row
+
+                // Calculate width per button in the row
+                const buttonWidth = `${100 / row.buttonCount}%`; // Percent-based width
+
+                // Create buttons for the row
+                for (let i = 0; i < row.buttonCount; i++) {
+                    let color = "grey";
+                    let textContent = ""
+                    if (row.buttonCount === 4) {
+                        console.log(scratches[i])
+
+                        textContent = "Scratch"
+                        if (scratches[i] === "30") {
+                            color = "red"
                         }
-
-                        const data = await response.json(); // Expect response as a JSON object
-                        // Extract the result (displayable string) from the response
-                        const stringifiedData = JSON.stringify(data);
-                        const parsedData = JSON.parse(stringifiedData);
-                        const parsedData2 = JSON.parse(JSON.stringify(parsedData.result));
-                        const parsedData3 = JSON.parse(JSON.stringify(parsedData.health));
-                        healthState = parsedData3;
-                        // console.log(healthState);
-                        // Display the formatted result in the #response-container
-                                        // Example usage
-                        const totalWidth = "50%"; // The total width for each row (you can adjust this value)
-                        displayButtons(totalWidth); // Display the buttons in the container
-                        // document.getElementById('response-container').innerHTML = parsedData2;
-
-                    } catch (error) {
-                        console.error("Error while sending wound severity:", error);
+                    } else if (row.buttonCount === 3) {
+                        textContent = "Minor"
+                        if (minorWounds[i] === "40") {
+                            color = "red"
+                        }
+                    } else if ((row.buttonCount === 2)) {
+                        textContent = "Heavy"
+                        if (heavyWounds[i] === "60") {
+                            color = "red"
+                        }
+                    } else if ((row.buttonCount === 1)) {
+                        textContent = "Lethal"
+                        if (lethalWounds[i] === "120") {
+                            color = "red"
+                        }
                     }
+                    const button = document.createElement("button");
+                    button.textContent = "";
+                    button.style.flex = "1"; // Ensure buttons stretch equally
+                    button.style.backgroundColor = color; // Set button color to blue
+                    button.style.border = "none"; // Remove default border
+                    button.style.color = "white"; // Set text color to white
+                    button.style.padding = "10px"; // Padding for the button
+                    button.style.margin = "2px"; // Space between buttons
+                    button.style.width = buttonWidth; // Set width according to button count
+                    rowDiv.appendChild(button);
                 }
 
-                async function roll() {
-                    try {
-                        // Make the POST request to the server
-                        const response = await fetch('https://shapeshifter-python.onrender.com/roll', {
-                        // const response = await fetch('http://localhost:5000/roll', {
-                            method: 'POST'
-                        });
+                // Append the row to the container
+                container.appendChild(rowDiv);
+            });
+        }
 
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
 
-                        const data = await response.json(); // Expect response as a JSON object
-                        const stringifiedData = JSON.stringify(data);
-                        const parsedData = JSON.parse(stringifiedData);
-                        const parsedData2 = JSON.parse(JSON.stringify(parsedData.result));
-                        // console.log(parsedData2)
 
-                        document.getElementById('response-container-roll').innerHTML =  `You rolled ${parsedData2}!`;
+        const translations = {
+            en: {
+                titleMain: "Shapeshifter",
+                titleRole: "Role-playing Game",
+                titleHelper: "Mechanics helper page",
+                labelCharacterName: "Character Name:",
+                labelCharacterClass: "Character Class:"
+            },
+            pl: {
+                titleMain: "Shapeshifter",
+                titleRole: "Gra fabularna",
+                titleHelper: "Strona wspierania mechaniki",
+                labelCharacterName: "Imię postaci:",
+                labelCharacterClass: "Klasa postaci:"
+            }
+        };
 
-                    } catch (error) {
-                        console.error("Error while rolling:", error);
-                    }
-                    }
+        function switchLanguage(language) {
+            const languageData = translations[language];
 
-                function displayButtons(totalWidth) {
-                    // Create the container element for buttons
-                    const container = document.getElementById("buttons-container");
-                    container.innerHTML = ""; // Clear any previous content
-
-                    // Button row definitions
-                    const buttonRows = [
-                        { buttonCount: 4 },
-                        { buttonCount: 3 },
-                        { buttonCount: 2 },
-                        { buttonCount: 1 }
-                    ];
-
-                    const regex = /scratches: \[([^\]]*)\], minor_wounds: \[([^\]]*)\], heavy_wounds: \[([^\]]*)\], lethal_wounds: \[([^\]]*)\]/;
-                    const match = healthState.match(regex);
-                    
-                    let scratches = [];
-                    let minorWounds = [];
-                    let heavyWounds = [];
-                    let lethalWounds = [];
-
-                    if (match) {
-                        scratches = match[1].split(',').map(item => item.trim());
-                        minorWounds = match[2].split(',').map(item => item.trim());
-                        heavyWounds = match[3].split(',').map(item => item.trim());
-                        lethalWounds = match[4].split(',').map(item => item.trim());
-                    }
-
-                    // Extract each wound category (string array)
-
-                    console.log(scratches);
-                    console.log(minorWounds);
-                    console.log(heavyWounds);
-                    console.log(lethalWounds);
-
-                    // Loop through each row definition
-                    buttonRows.forEach(row => {
-                        // Create the row element
-                        const rowDiv = document.createElement("div");
-                        rowDiv.style.display = "flex"; // Flexbox to align buttons in a row
-                        rowDiv.style.width = totalWidth; // Set the total width of the row
-
-                        // Calculate width per button in the row
-                        const buttonWidth = `${100 / row.buttonCount}%`; // Percent-based width
-                        
-                        // Create buttons for the row
-                        for (let i = 0; i < row.buttonCount; i++) {
-                            let color = "grey";
-                            let textContent = ""
-                            if (row.buttonCount === 4) {
-                                console.log(scratches[i])
-
-                                textContent = "Scratch"
-                                if (scratches[i] === "30") {
-                                    color = "red"
-                                }
-                            } else if (row.buttonCount === 3) {
-                                textContent = "Minor"
-                                if (minorWounds[i] === "40") {
-                                    color = "red"
-                                }
-                            } else if ((row.buttonCount === 2)) {
-                                textContent = "Heavy"
-                                if (heavyWounds[i] === "60") {
-                                    color = "red"
-                                }
-                            } else if ((row.buttonCount === 1)) {
-                                textContent = "Lethal"
-                                if (lethalWounds[i] === "120") {
-                                    color = "red"
-                                }
-                            }
-                            const button = document.createElement("button");
-                            button.textContent = "";
-                            button.style.flex = "1"; // Ensure buttons stretch equally
-                            button.style.backgroundColor = color; // Set button color to blue
-                            button.style.border = "none"; // Remove default border
-                            button.style.color = "white"; // Set text color to white
-                            button.style.padding = "10px"; // Padding for the button
-                            button.style.margin = "2px"; // Space between buttons
-                            button.style.width = buttonWidth; // Set width according to button count
-                            rowDiv.appendChild(button);
-                        }
-
-                        // Append the row to the container
-                        container.appendChild(rowDiv);
-                    });
+            Object.keys(languageData).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.innerText = languageData[key];
                 }
+            });
+        }
 
+    </script>
+</body>
 
-
-                const translations = {
-                        en: {
-                            titleMain: "Shapeshifter",
-                            titleRole: "Role-playing Game",
-                            titleHelper: "Mechanics helper page",
-                            labelCharacterName: "Character Name:",
-                            labelCharacterClass: "Character Class:"
-                        },
-                        pl: {
-                            titleMain: "Shapeshifter",
-                            titleRole: "Gra fabularna",
-                            titleHelper: "Strona wspierania mechaniki",
-                            labelCharacterName: "Imię postaci:",
-                            labelCharacterClass: "Klasa postaci:"
-                        }
-                    };
-                
-                function switchLanguage(language) {
-                    const languageData = translations[language];
-            
-                    Object.keys(languageData).forEach(key => {
-                        const element = document.getElementById(key);
-                        if (element) {
-                            element.innerText = languageData[key];
-                        }
-                    });
-                }
-    
-            </script>
-        </body>
-        </html>
-    </div>
+</html>
+</div>
 
 
 
 <!-- Links to LinkedIn and GitHub at the bottom -->
 <div style="text-align: center; margin-top: 30px;">
     <a href="https://www.linkedin.com/in/j%C4%99drzej-lizakowski-836455155/" target="_blank">
-        <img src="https://media.licdn.com/dms/image/v2/C5603AQEjalzOXbd-dw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1531399199031?e=1736985600&v=beta&t=1MUmLn8UQ5ozn-qoUJAUIgbz676-GEy88aMlcOpiluc" alt="LinkedIn Profile" style="width: 50px; height: 50px; border-radius: 50%; vertical-align: middle;">
+        <img src="https://media.licdn.com/dms/image/v2/C5603AQEjalzOXbd-dw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1531399199031?e=1736985600&v=beta&t=1MUmLn8UQ5ozn-qoUJAUIgbz676-GEy88aMlcOpiluc"
+            alt="LinkedIn Profile" style="width: 50px; height: 50px; border-radius: 50%; vertical-align: middle;">
         LinkedIn
-    </a> | 
+    </a> |
     <a href="https://github.com/lizak2" target="_blank">
         GitHub
     </a>
@@ -508,4 +603,3 @@
     }
 
 </script>
-
