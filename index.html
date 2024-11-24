@@ -1,6 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<script>
+let currentLanguage = "en"; // Default language
+
+// Translation data
+const translations = {
+    en: {
+        titleMain: "Shapeshifter",
+        titleRole: "Role-playing Game",
+        titleHelper: "Mechanics Calculator",
+        characterNameLabel: "Character name:",
+        experienceLabel: "Experience:",
+        currentCharacterLevel: "Current character level",
+        calculateButton: "Calculate levels",
+        newCharacterLevel: "New character level",
+        levelsBuyable: "Levels buyable",
+        remainingExperience: "Remaining experience",
+        attributesLabel: "Attributes",
+        combatProficienciesLabel: "Weapon Proficiencies",
+        magicProficienciesLabel: "Magic Proficiencies",
+        placeholderName: "Enter character name",
+        placeholderExperience: "Enter experience points",
+        attributes: ["Strength", "Agility", "Perception", "Wisdom", "Charisma"],
+        combatProficiencies: ["Hand-to-Hand", "One-Handed", "Two-Handed", "Polearms", "Throwing", "Bows", "Crossbows", "Pyrotechnics", "Firearms"],
+        magicProficiencies: ["Elements", "Offensive", "Defensive", "Auras", "Healing", "Summoning", "Illusion", "Mind Control", "Nature Control", "Shapeshifting"],
+        titleHealthCalculations: "Wound Table Calculator",
+    },
+    pl: {
+        titleMain: "Shapeshifter",
+        titleRole: "Gra fabularna",
+        titleHelper: "Kalkulator Mechaniki",
+        characterNameLabel: "Imię postaci:",
+        experienceLabel: "Doświadczenie:",
+        currentCharacterLevel: "Aktualny poziom postaci",
+        calculateButton: "Oblicz poziomy",
+        newCharacterLevel: "Nowy poziom postaci",
+        levelsBuyable: "Poziomy do zakupu",
+        remainingExperience: "Pozostałe doświadczenie",
+        attributesLabel: "Atrybuty",
+        combatProficienciesLabel: "Umiejętności Walki",
+        magicProficienciesLabel: "Umiejętności Magiczne",
+        placeholderName: "Wpisz imię postaci",
+        placeholderExperience: "Wpisz punkty doświadczenia",
+        attributes: ["Siła", "Zwinność", "Percepcja", "Mądrość", "Charyzma"],
+        combatProficiencies: ["Walka Wręcz", "Jednoręczne", "Dwuręczne", "Bronie Drzewcowe", "Rzucanie", "Łuki", "Kusze", "Pirotechnika", "Broń Palna"],
+        magicProficiencies: ["Elementy", "Ofensywna", "Defensywna", "Aury", "Leczenie", "Przywoływanie", "Iluzja", "Kontrola Umysłu", "Kontrola Natury", "Zmiennokształtność"],
+        titleHealthCalculations: "Kalkulator Tabeli Ran",
+
+    }
+};
+
+// Switch language based on the selected flag
+function switchLanguage(lang) {
+    currentLanguage = lang; // Update the global language variable
+    const t = translations[lang];
+    if (!t) return;
+
+    // Update titles with translation
+    document.getElementById("title-main").innerText = t.titleMain;
+    document.getElementById("title-role").innerText = t.titleRole;
+    document.getElementById("title-helper").innerText = t.titleHelper;
+
+    // Update text content for all visible strings
+    document.getElementById("label-character-name").innerText = t.characterNameLabel;
+    document.getElementById("character-name").placeholder = t.placeholderName; // Update placeholder for name
+    document.getElementById("experience").placeholder = t.placeholderExperience; // Update placeholder for experience
+
+    document.querySelector("label[for='experience']").innerText = t.experienceLabel;
+    document.getElementById("current-character-level").innerText = `${t.currentCharacterLevel}: 0`;
+    document.querySelector("button").innerText = t.calculateButton;
+
+    // Update table headers and labels
+    document.querySelector("label[for='attributes']").innerText = t.attributesLabel;
+    document.querySelector("label[for='combat-proficiencies']").innerText = t.combatProficienciesLabel;
+    document.querySelector("label[for='magic-proficiencies']").innerText = t.magicProficienciesLabel;
+
+    // Update attributes and proficiencies options
+    updateOptions("attributes", t.attributes);
+    updateOptions("combat-proficiencies", t.combatProficiencies);
+    updateOptions("magic-proficiencies", t.magicProficiencies);
+}
+
+// Function to update the options (checkboxes) for each section
+function updateOptions(sectionId, options) {
+    const section = document.getElementById(sectionId);
+    const checkboxes = section.querySelectorAll("input[type='checkbox']");
+    options.forEach((option, index) => {
+        const label = section.querySelector(`label[for='${sectionId}-${index}']`);
+        label.innerText = option;
+        checkboxes[index].setAttribute("id", `${sectionId}-${index}`);
+    });
+}
+
+</script>
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -81,6 +175,7 @@
             cursor: pointer;
             border-radius: 4px;
             font-size: 16px;
+            margin-bottom: 10px;
         }
 
         button:hover {
@@ -93,16 +188,21 @@
             background: #e9ecef;
             border-radius: 4px;
         }
-
-        /* table {
-            width: 100%;
+        
+        /*
+         table {
             margin-bottom: 20px;
         }
-
+        */
         table td {
-            padding: 5px;
-            text-align: center;
-        } */
+            padding:1px;
+            /* text-align: center; */
+        } 
+
+        td:nth-child(3) {
+            width: 25px;  /* Sets the exact width of the third column */
+            padding: 1px;  /* Padding for cell content, does not affect width */
+        }
 
         .error {
             color: red;
@@ -112,9 +212,9 @@
 </head>
 
 <body>
-    <h1>Shapeshifter</h1>
-    <h2>Role-playing Game</h2>
-    <h3>Mechanics Helper Page</h3>
+    <h1 id="title-main">Shapeshifter</h1>
+    <h2 id="title-role">Role-playing Game</h2>
+    <h3 id="title-helper">Mechanics Calculator</h3>
 
     <div class="container">
         <div class="form-group">
@@ -179,13 +279,17 @@
 
             // Calculate levels purchasable with experience
             function calculateLevels() {
+                const t = translations[currentLanguage]; // Get translations for the current language
+
                 const experience = parseInt(document.getElementById("experience").value) || 0;
 
                 let attributeLevel = calculateCheckedLevels("attributes");
                 let weaponProficiencyLevel = calculateCheckedLevels("combat-proficiencies");
                 let magicProficiencyLevel = calculateCheckedLevels("magic-proficiencies");
 
-                let characterLevel = parseInt(document.getElementById("current-character-level").innerText.replace("Current Character Level: ", ""));
+                // Dynamically determine the correct prefix based on the current language
+                let currentLang = document.getElementById("current-character-level").innerText.split(":")[0].trim();
+                let characterLevel = parseInt(document.getElementById("current-character-level").innerText.replace(`${currentLang}: `, ""));
 
                 let levelsToBuy = 0;
                 let remainingExperience = experience;
@@ -198,10 +302,11 @@
                     nextLevelCost += 10; // Increment the cost for the next level
                 }
 
+                // Update the result section with translated text
                 document.getElementById("result").innerHTML = `
-                    <p>New Character Level: ${characterLevel}</p>
-                    <p>Levels Buyable: ${levelsToBuy}</p>
-                    <p>Remaining Experience: ${remainingExperience}</p>
+                    <p>${t.newCharacterLevel}: ${characterLevel}</p>
+                    <p>${t.levelsBuyable}: ${levelsToBuy}</p>
+                    <p>${t.remainingExperience}: ${remainingExperience}</p>
                 `;
             }
 
@@ -343,8 +448,7 @@
     </style>
 </head>
 
-<body>
-    <h1>Health calculations</h1>
+    <h1 id="title-health-calculations">Wound Table Calculator</h1>
 
     <div style="display: flex; align-items: center;">
         <button onclick="roll()">Roll d20</button>
@@ -534,25 +638,7 @@
                 container.appendChild(rowDiv);
             });
         }
-
-        const translations = {
-            en: {
-                titleMain: "Shapeshifter",
-                titleRole: "Role-playing Game",
-                titleHelper: "Mechanics helper page",
-                labelCharacterName: "Character Name:",
-                labelCharacterClass: "Character Class:"
-            },
-            pl: {
-                titleMain: "Shapeshifter",
-                titleRole: "Gra fabularna",
-                titleHelper: "Strona wspierania mechaniki",
-                labelCharacterName: "Imię postaci:",
-                labelCharacterClass: "Klasa postaci:"
-            }
-        };
     </script>
-</body>
 </html>
 </div>
 
