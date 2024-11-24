@@ -18,7 +18,7 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: rgba(84, 65, 42, 0.582);
+            background-color: #d6cfc6;
             color: #000000;
             margin: 0;
             padding: 20px;
@@ -31,7 +31,7 @@
         .container {
             max-width: 800px;
             margin: 0 auto;
-            background: #fff;
+            background: #f6eee398;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -319,10 +319,7 @@
             document.getElementById("magic-proficiencies").innerHTML = createTable("Magic Proficiencies", magicProficiencies);
         </script>
 </body>
-
-
 </html>
-
 
 <head>
     <meta charset="UTF-8">
@@ -347,9 +344,7 @@
 </head>
 
 <body>
-
     <h1>Health calculations</h1>
-
 
     <div style="display: flex; align-items: center;">
         <button onclick="roll()">Roll d20</button>
@@ -540,8 +535,6 @@
             });
         }
 
-
-
         const translations = {
             en: {
                 titleMain: "Shapeshifter",
@@ -558,21 +551,8 @@
                 labelCharacterClass: "Klasa postaci:"
             }
         };
-
-        function switchLanguage(language) {
-            const languageData = translations[language];
-
-            Object.keys(languageData).forEach(key => {
-                const element = document.getElementById(key);
-                if (element) {
-                    element.innerText = languageData[key];
-                }
-            });
-        }
-
     </script>
 </body>
-
 </html>
 </div>
 
@@ -589,17 +569,3 @@
         GitHub
     </a>
 </div>
-
-<script>
-    function switchLanguage(language) {
-        console.log("language switched to ", language)
-        if (language === 'pl') {
-            document.body.classList.remove('lang-en');
-            document.body.classList.add('lang-pl');
-        } else {
-            document.body.classList.remove('lang-pl');
-            document.body.classList.add('lang-en');
-        }
-    }
-
-</script>
