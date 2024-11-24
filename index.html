@@ -4,6 +4,7 @@
 <script>
 let currentLanguage = "en"; // Default language
 let rollMessage = "You rolled";
+let currentCharacterLevel = "Current character level";
 
 // Translation data
 const translations = {
@@ -18,14 +19,35 @@ const translations = {
         newCharacterLevel: "New character level",
         levelsBuyable: "Levels buyable",
         remainingExperience: "Remaining experience",
-        attributesLabel: "Attributes",
-        combatProficienciesLabel: "Weapon Proficiencies",
-        magicProficienciesLabel: "Magic Proficiencies",
         placeholderName: "Enter character name",
         placeholderExperience: "Enter experience points",
-        attributes: ["Strength", "Agility", "Perception", "Wisdom", "Charisma"],
-        combatProficiencies: ["Hand-to-Hand", "One-Handed", "Two-Handed", "Polearms", "Throwing", "Bows", "Crossbows", "Pyrotechnics", "Firearms"],
-        magicProficiencies: ["Elements", "Offensive", "Defensive", "Auras", "Healing", "Summoning", "Illusion", "Mind Control", "Nature Control", "Shapeshifting"],
+        attributesHeader: "Attributes",
+        combatProficienciesHeader: "Weapon Proficiencies",
+        magicProficienciesHeader: "Magic Proficiencies",
+        strength: "Strength",
+        agility: "Agility",
+        perception: "Perception",
+        wisdom: "Wisdom",
+        charisma: "Charisma",
+        handToHand: "Hand-to-Hand",
+        oneHanded: "One-Handed",
+        twoHanded: "Two-Handed",
+        polearms: "Polearms",
+        throwing: "Throwing",
+        bows: "Bows",
+        crossbows: "Crossbows",
+        pyrotechnics: "Pyrotechnics",
+        firearms: "Firearms",
+        elements: "Elements",
+        offensive: "Offensive",
+        defensive: "Defensive",
+        auras: "Auras",
+        healing: "Healing",
+        summoning: "Summoning",
+        illusion: "Illusion",
+        mindControl: "Mind Control",
+        natureControl: "Nature Control",
+        shapeshifting: "Shapeshifting",
         titleHealthCalculations: "Wound Table Calculator",
         healthTableLabel: "Health Table",
         scratchLabel: "2-5 Draśnięcie",
@@ -51,14 +73,35 @@ const translations = {
         newCharacterLevel: "Nowy poziom postaci",
         levelsBuyable: "Poziomy do zakupu",
         remainingExperience: "Pozostałe doświadczenie",
-        attributesLabel: "Atrybuty",
-        combatProficienciesLabel: "Umiejętności Walki",
-        magicProficienciesLabel: "Umiejętności Magiczne",
         placeholderName: "Wpisz imię postaci",
         placeholderExperience: "Wpisz punkty doświadczenia",
-        attributes: ["Siła", "Zwinność", "Percepcja", "Mądrość", "Charyzma"],
-        combatProficiencies: ["Walka Wręcz", "Jednoręczne", "Dwuręczne", "Bronie Drzewcowe", "Rzucanie", "Łuki", "Kusze", "Pirotechnika", "Broń Palna"],
-        magicProficiencies: ["Elementy", "Ofensywna", "Defensywna", "Aury", "Leczenie", "Przywoływanie", "Iluzja", "Kontrola Umysłu", "Kontrola Natury", "Zmiennokształtność"],
+        attributesHeader: "Atrybuty",
+        combatProficienciesHeader: "Biegłości bojowe",
+        magicProficienciesHeader: "Biegłości magiczne",
+        strength: "Siła",
+        agility: "Atletyka",
+        perception: "Bystrość",
+        wisdom: "Wiedza",
+        charisma: "Charyzma",
+        handToHand: "Walka wręcz",
+        oneHanded: "Jednoręczna",
+        twoHanded: "Dwuręczna",
+        polearms: "Włócznie",
+        throwing: "Miotana",
+        bows: "Łuki",
+        crossbows: "Kusze",
+        pyrotechnics: "Pirotechnika",
+        firearms: "Broń palna",
+        elements: "Elementy",
+        offensive: "Ofensywne",
+        defensive: "Defensywne",
+        auras: "Aury",
+        healing: "Leczenie",
+        summoning: "Przywoływanie",
+        illusion: "Iluzje",
+        mindControl: "Kontrola umysłu",
+        natureControl: "Kontrola natury",
+        shapeshifting: "Zmiennokształtność",
         titleHealthCalculations: "Kalkulator Tabeli Ran",
         healthTableLabel: "Tabela Ran",
         scratchLabel: "2-5 Draśnięcie",
@@ -75,11 +118,21 @@ const translations = {
     }
 };
 
+// Function to update all sections when the language is switched
+function updateSectionsForLanguage() {
+    document.getElementById("attributes").innerHTML = createTable("attributes", attributes);
+    document.getElementById("combat-proficiencies").innerHTML = createTable("combatProficiencies", combatProficiencies);
+    document.getElementById("magic-proficiencies").innerHTML = createTable("magicProficiencies", magicProficiencies);
+}
+
 // Switch language based on the selected flag
 function switchLanguage(lang) {
     currentLanguage = lang; // Update the global language variable
     const t = translations[lang];
     if (!t) return;
+
+    updateSectionsForLanguage();
+
 
     // Update titles with translation
     document.getElementById("title-main").innerText = t.titleMain;
@@ -95,6 +148,7 @@ function switchLanguage(lang) {
     // document.getElementById("refresh-label").innerText = t.refreshLabel;
 
     rollMessage = t.rollMessage;
+    currentCharacterLevel = t.currentCharacterLevel;
 
     document.getElementById("roll-button").innerText = t.rollButton;
     document.getElementById("scratch-btn").innerText = t.scratchButton;
@@ -113,27 +167,6 @@ function switchLanguage(lang) {
     document.querySelector("label[for='experience']").innerText = t.experienceLabel;
     document.getElementById("current-character-level").innerText = `${t.currentCharacterLevel}: 0`;
     document.querySelector("button").innerText = t.calculateButton;
-
-    // Update table headers and labels
-    document.querySelector("label[for='attributes']").innerText = t.attributesLabel;
-    document.querySelector("label[for='combat-proficiencies']").innerText = t.combatProficienciesLabel;
-    document.querySelector("label[for='magic-proficiencies']").innerText = t.magicProficienciesLabel;
-
-    // Update attributes and proficiencies options
-    updateOptions("attributes", t.attributes);
-    updateOptions("combat-proficiencies", t.combatProficiencies);
-    updateOptions("magic-proficiencies", t.magicProficiencies);
-}
-
-// Function to update the options (checkboxes) for each section
-function updateOptions(sectionId, options) {
-    const section = document.getElementById(sectionId);
-    const checkboxes = section.querySelectorAll("input[type='checkbox']");
-    options.forEach((option, index) => {
-        const label = section.querySelector(`label[for='${sectionId}-${index}']`);
-        label.innerText = option;
-        checkboxes[index].setAttribute("id", `${sectionId}-${index}`);
-    });
 }
 
 </script>
@@ -232,14 +265,8 @@ function updateOptions(sectionId, options) {
             border-radius: 4px;
         }
         
-        /*
-         table {
-            margin-bottom: 20px;
-        }
-        */
         table td {
             padding:1px;
-            /* text-align: center; */
         } 
 
         td:nth-child(3) {
@@ -305,7 +332,7 @@ function updateOptions(sectionId, options) {
                 const characterLevel = attributeLevel + weaponProficiencyLevel + magicProficiencyLevel;
 
                 // Update the Current Character Level display
-                document.getElementById("current-character-level").innerText = `Current Character Level: ${characterLevel}`;
+                document.getElementById("current-character-level").innerText = `${currentCharacterLevel}: ${characterLevel}`;
             }
 
             // Calculate total levels checked for a section
@@ -352,29 +379,32 @@ function updateOptions(sectionId, options) {
                     <p>${t.remainingExperience}: ${remainingExperience}</p>
                 `;
             }
-
-            // Function to create an Attribute or Proficiency table
             function createTable(attributeName, options) {
+                const t = translations[currentLanguage]; // Get the current language translations
                 let tableHtml = `<div class="form-group">
-                            <label>${attributeName}:</label>
-                            <table border="1">`;
+                                    <label>${t[attributeName + 'Header'] || attributeName}:</label>
+                                    <table border="1">`;
+
                 options.forEach((option) => {
+                    // Use the camelCase key to get the translation
+                    const translatedOption = t[option] || option;  // If no translation found, fallback to the original option
                     tableHtml += `<tr>
-                            <td><label for="${option.toLowerCase().replace(/\s+/g, '')}">${option}:</label></td>
-                            <td>`;
+                                    <td><label for="${option}">${translatedOption}:</label></td>
+                                    <td>`;
                     // Generate checkboxes for levels 1 to 5
                     for (let i = 1; i <= 5; i++) {
-                        tableHtml += `<input type="checkbox" id="${option.toLowerCase().replace(/\s+/g, '')}-${i}" class="${option.toLowerCase().replace(/\s+/g, '')}" data-level="${i}" onclick="updateCheckboxes(this)">`;
+                        tableHtml += `<input type="checkbox" id="${option}-${i}" class="${option}" data-level="${i}" onclick="updateCheckboxes(this)">`;
                     }
                     tableHtml += `</td>
-                          <td class="checkbox-count" id="${option.toLowerCase().replace(/\s+/g, '')}-count">+0</td>
-                          </tr>`;
+                                <td class="checkbox-count" id="${option}-count">+0</td>
+                                </tr>`;
                 });
-                tableHtml += `</table>
-                      </div>`;
 
+                tableHtml += `</table>
+                            </div>`;
                 return tableHtml;
             }
+
 
             function updateCheckboxes(checkbox) {
                 let level = parseInt(checkbox.getAttribute('data-level'));
@@ -427,39 +457,40 @@ function updateOptions(sectionId, options) {
 
             // Define Attributes
             const attributes = [
-                "Strength",
-                "Agility",
-                "Perception",
-                "Wisdom",
-                "Charisma"
+                "strength",
+                "agility",
+                "perception",
+                "wisdom",
+                "charisma"
             ];
 
-            // Define Weapon Proficiencies
+            // Define Weapon Proficiencies (using camelCase)
             const combatProficiencies = [
-                "Hand-to-Hand",
-                "One-Handed",
-                "Two-Handed",
-                "Polearms",
-                "Throwing",
-                "Bows",
-                "Crossbows",
-                "Pyrotechnics",
-                "Firearms"
+                "handToHand",
+                "oneHanded",
+                "twoHanded",
+                "polearms",
+                "throwing",
+                "bows",
+                "crossbows",
+                "pyrotechnics",
+                "firearms"
             ];
 
-            // Define Magic Proficiencies
+            // Define Magic Proficiencies (using camelCase)
             const magicProficiencies = [
-                "Elements",
-                "Offensive",
-                "Defensive",
-                "Auras",
-                "Healing",
-                "Summoning",
-                "Illusion",
-                "Mind Control",
-                "Nature Control",
-                "Shapeshifting"
+                "elements",
+                "offensive",
+                "defensive",
+                "auras",
+                "healing",
+                "summoning",
+                "illusion",
+                "mindControl",
+                "natureControl",
+                "shapeshifting"
             ];
+
 
             // Generate and insert the HTML for Attributes, Weapon Proficiencies, and Magic Proficiencies
             document.getElementById("attributes").innerHTML = createTable("Attributes", attributes);
