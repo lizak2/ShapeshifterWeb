@@ -3,6 +3,7 @@
 
 <script>
 let currentLanguage = "en"; // Default language
+let rollMessage = "You rolled";
 
 // Translation data
 const translations = {
@@ -26,7 +27,19 @@ const translations = {
         combatProficiencies: ["Hand-to-Hand", "One-Handed", "Two-Handed", "Polearms", "Throwing", "Bows", "Crossbows", "Pyrotechnics", "Firearms"],
         magicProficiencies: ["Elements", "Offensive", "Defensive", "Auras", "Healing", "Summoning", "Illusion", "Mind Control", "Nature Control", "Shapeshifting"],
         titleHealthCalculations: "Wound Table Calculator",
-    },
+        healthTableLabel: "Health Table",
+        scratchLabel: "2-5 Draśnięcie",
+        minorLabel: "6-12 Lekka",
+        heavyLabel: "13-18 Ciężka",
+        lethalLabel: "19-20 Śmiertelna",
+        rollButton: "Roll d20",
+        scratchButton: "Scratch",
+        minorButton: "Minor",
+        heavyButton: "Heavy",
+        lethalButton: "Lethal",
+        refreshButton: "Refresh",
+        rollMessage: "You rolled"
+        },
     pl: {
         titleMain: "Shapeshifter",
         titleRole: "Gra fabularna",
@@ -47,7 +60,18 @@ const translations = {
         combatProficiencies: ["Walka Wręcz", "Jednoręczne", "Dwuręczne", "Bronie Drzewcowe", "Rzucanie", "Łuki", "Kusze", "Pirotechnika", "Broń Palna"],
         magicProficiencies: ["Elementy", "Ofensywna", "Defensywna", "Aury", "Leczenie", "Przywoływanie", "Iluzja", "Kontrola Umysłu", "Kontrola Natury", "Zmiennokształtność"],
         titleHealthCalculations: "Kalkulator Tabeli Ran",
-
+        healthTableLabel: "Tabela Ran",
+        scratchLabel: "2-5 Draśnięcie",
+        minorLabel: "6-12 Lekka",
+        heavyLabel: "13-18 Ciężka",
+        lethalLabel: "19-20 Śmiertelna",
+        rollButton: "Rzuć k20",
+        scratchButton: "Draśnięcie",
+        minorButton: "Lekka",
+        heavyButton: "Ciężka",
+        lethalButton: "Śmiertelna",
+        refreshButton: "Odśwież",
+        rollMessage: "Wypadło"
     }
 };
 
@@ -61,6 +85,25 @@ function switchLanguage(lang) {
     document.getElementById("title-main").innerText = t.titleMain;
     document.getElementById("title-role").innerText = t.titleRole;
     document.getElementById("title-helper").innerText = t.titleHelper;
+    document.getElementById("title-health-calculations").innerText = t.titleHealthCalculations;
+
+    // document.getElementById("roll-d20-Label").innerText = t.rolld20Label;fv
+    document.getElementById("scratch-label").innerText = t.scratchLabel;
+    document.getElementById("minor-wound-label").innerText = t.minorLabel;
+    document.getElementById("heavy-wound-label").innerText = t.heavyLabel;
+    document.getElementById("lethal-wound-label").innerText = t.lethalLabel;
+    // document.getElementById("refresh-label").innerText = t.refreshLabel;
+
+    rollMessage = t.rollMessage;
+
+    document.getElementById("roll-button").innerText = t.rollButton;
+    document.getElementById("scratch-btn").innerText = t.scratchButton;
+    document.getElementById("minor-btn").innerText = t.minorButton;
+    document.getElementById("heavy-btn").innerText = t.heavyButton;
+    document.getElementById("lethal-btn").innerText = t.lethalButton;
+    document.getElementById("refresh-button").innerText = t.refreshButton;
+
+    document.getElementById("health-table-label").innerText = t.healthTableLabel;
 
     // Update text content for all visible strings
     document.getElementById("label-character-name").innerText = t.characterNameLabel;
@@ -451,22 +494,23 @@ function updateOptions(sectionId, options) {
     <h1 id="title-health-calculations">Wound Table Calculator</h1>
 
     <div style="display: flex; align-items: center;">
-        <button onclick="roll()">Roll d20</button>
+        <button id="roll-button" onclick="roll()">Roll d20</button>
         <span id="response-container-roll" style="margin-left: 10px;"></span>
     </div>
 
-    <label>2-5 Scratch</label>
-    <label>6-12 Minor wound</label>
-    <label>13-18 Heavy wound</label>
-    <label>19-20 Lethal</label>
+    <label id="scratch-label">2-5 Scratch</label>
+    <label id="minor-wound-label">6-12 Minor wound</label>
+    <label id="heavy-wound-label">13-18 Heavy wound</label>
+    <label id="lethal-wound-label">19-20 Lethal</label>
 
-    <button onclick="sendWoundSeverity(30)">Scratch</button>
-    <button onclick="sendWoundSeverity(40)">Minor</button>
-    <button onclick="sendWoundSeverity(60)">Heavy</button>
-    <button onclick="sendWoundSeverity(120)">Lethal</button>
+
+    <button id="scratch-btn" onclick="sendWoundSeverity(30)">Scratch</button>
+    <button id="minor-btn" onclick="sendWoundSeverity(40)">Minor</button>
+    <button id="heavy-btn" onclick="sendWoundSeverity(60)">Heavy</button>
+    <button id="lethal-btn" onclick="sendWoundSeverity(120)">Lethal</button>
     <button id="refresh-button" onclick="resetHealthState()">Refresh</button>
 
-    <label>Health:</label>
+    <label id="health-table-label">Health Table</label>
     <div id="buttons-container"></div> <!-- Container for the buttons -->
 
     <script>
@@ -543,7 +587,7 @@ function updateOptions(sectionId, options) {
                 const parsedData2 = JSON.parse(JSON.stringify(parsedData.result));
                 // console.log(parsedData2)
 
-                document.getElementById('response-container-roll').innerHTML = `You rolled ${parsedData2}!`;
+                document.getElementById('response-container-roll').innerHTML = `${rollMessage} ${parsedData2}!`;
 
             } catch (error) {
                 console.error("Error while rolling:", error);
